@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./Profile.css";
-import profile from "/Users/shankaralemagar/Desktop/CashCalc/frontend/src/assets/images/Profile_Page_icon/Male User.png";
-import image1 from "/Users/shankaralemagar/Desktop/CashCalc/frontend/src/assets/images/Profile_Page_icon/photo.png";
-import edit from "/Users/shankaralemagar/Desktop/CashCalc/frontend/src/assets/images/Profile_Page_icon/Edit.png";
+import profile from "../../assets/images/Profile_Page_icon/Male User.png";
+import image1 from "../../assets/images/Profile_Page_icon/photo.png";
+import edit from "../../assets/images/Profile_Page_icon/Edit.png";
 
 const Profile = () => {
   const [condition, setCondition] = useState("none");
