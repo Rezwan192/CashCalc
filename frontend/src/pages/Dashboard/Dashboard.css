@@ -1,0 +1,47 @@
+.incExpenses {
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  background-color: beige;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 25%;
+  margin-right: 25%;
+  border-radius: 12px;
+}
+
+.savings {
+  font-weight: bold;
+  text-align: center;
+  background-color: beige;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 25%;
+  margin-right: 55%;
+  border-radius: 12px;
+}
+
+.displayIncExpenses {
+  font-size: 25px;
+  background-color: beige;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 25%;
+  margin-right: 55%;
+  border-radius: 12px;
+}
+
+.spent {
+  font-weight: bold;
+  text-align: center;
+  background-color: beige;
+  margin-top: -28%;
+  margin-bottom: 20px;
+  margin-left: 46%;
+  margin-right: 25%;
+  border-radius: 12px;
+}
+
+.centerText {
+  text-align: center;
+}
