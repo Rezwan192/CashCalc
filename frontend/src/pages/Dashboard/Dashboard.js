@@ -12,6 +12,7 @@ function Dashboard() {
   const [Expenses, setExpenses] = useState("100");
   const [Spent, setSpent] = useState("100");
 
+  //need to fix orientation of displayIncExpenses
   return (
     <>
       <h1 className="centerText">Dashboard</h1>
@@ -27,14 +28,31 @@ function Dashboard() {
       </div>
 
       <div className="displayIncExpenses">
-        Income Expenses <br />
-        {Income} {Expenses}
+        <section>
+          Income Expenses <br />{" "}
+        </section>
+        {Income}
+        {Expenses}
       </div>
 
       <div className="spent">
         Spent <br />
         {Spent}
         <renderSpent>{renderSpent}</renderSpent>
+      </div>
+
+      <div className="expenses">
+        <section>----------------------------------------</section>
+        <section className="color">Expenses</section>
+        <body>
+          Rent: 1000$ <br />
+          Food: 500$ <br />
+          Transportation: 200$ <br />
+          Other: 300$
+        </body>
+        <section className="bold">
+          ----------------------------------------
+        </section>
       </div>
     </>
   );

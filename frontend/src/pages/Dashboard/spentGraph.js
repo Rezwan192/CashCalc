@@ -1,4 +1,4 @@
-import { PieChart, Pie } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
 
 const data = [
   { name: "Jan", val: 400 },
@@ -6,6 +6,8 @@ const data = [
   { name: "Mar", val: 200 },
   { name: "Apr", val: 300 },
 ];
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const renderSpent = (
   <PieChart width={400} height={400}>
@@ -17,8 +19,11 @@ const renderSpent = (
       innerRadius={60} //affects inner circle in pie
       outerRadius={90} //affects pie itself
       paddingAngle={5} //distance between segmented bars
-      fill="000000" //determines color in pie
+      fill="FF0000" //determines color in pie
     />
+    {data.map((e, index) => (
+      <Cell key={e.val} fill={COLORS[index % COLORS.length]} />
+    ))}
   </PieChart>
 );
 
