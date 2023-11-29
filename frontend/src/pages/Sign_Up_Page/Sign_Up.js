@@ -6,7 +6,7 @@ import YouTube from "../../assets/images/Main_page_icon/link_icon/YouTube.png";
 import Twitter from "../../assets/images/Main_page_icon/link_icon/Twitter.png";
 import Croods_Chart from "../../assets/images/Main_page_icon/Croods_Chart.png";
 import Google from "../../assets/images/sign_Up_icon/Google.png";
-import Apple from "../../assets/images/sign_Up_icon/Apple.png";
+import Apple from "../../assets/images/sign_Up_icon/apple.png";
 import { Link } from "react-router-dom";
 import "./Sign_Up.css";
 
