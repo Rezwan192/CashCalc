@@ -1,0 +1,2 @@
+changed the dependency of nodemon to nodemon dev.(so i can see each change in every instance)
+to run just type in console "npm run dev"
