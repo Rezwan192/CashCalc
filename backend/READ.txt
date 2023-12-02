@@ -1,2 +1,15 @@
-changed the dependency of nodemon to nodemon dev.(so i can see each change in every instance)
-to run just type in console "npm run dev"
+    I Changed the dependency of nodemon to nodemon dev(so i can see each change in every instance), so to run just type in 
+the console "npm run dev". 
+
+    Can ignore authentication folder, code works fine(auth.js saves to db, validate.js missing way to get hashed pass from db but 
+comparison works)
+
+    Unable to figure out how to retrieve data from mongoDB, however a schema file was made(super basic for the purpose of testing).
+Routes were made via router in userRoutes.js, and path works as intended for displaying mongoDB data. userRoutes.js includes a similar 
+function, but sorts by id but its not working and can't figure it out. the idea is to have it work properly, then fetch data via id.
+more info in userRoutes.js
+
+    URI for connecting to database is included as a comment in server.js, so make your .env and include to connect to db. however,
+looking at the actual database requires an invitation so that is on todo list.
+
+    Code is decently commented, but ask for any clarification!
