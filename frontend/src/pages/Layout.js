@@ -6,6 +6,7 @@ function Layout() {
     <>
       <nav>
         <Link to="/">Home</Link>
+        <Link to ="/GetStarted" id = "links">Get Started</Link>
         <Link to= "/BudgetPlanning" id= "links">Budget Planning</Link>
         <Link to= "/Profile" id= "links">Profile</Link>
         {/*Add more paths to page files

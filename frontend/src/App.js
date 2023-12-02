@@ -4,6 +4,7 @@ import Layout from "./pages/Layout";
 import Sign_Up from "./pages/Sign_Up_Page/Sign_Up";
 import Sign_In from "./pages/Sign_In_Page/Sign_In";
 import Home from "./pages/Home_Page/Home";
+import GetStarted from "./pages/Get_Started_Page/GetStarted";
 // import Forgot_Password from "./pages/Forgot_Password_Page/Forgot_Password";
 import BudgetPlanning from "./pages/Budget_Planning_Page/BudgetPlanning";
 // import Dashboard from "./pages/Dashboard/Dashboard";
@@ -19,6 +20,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="sign_up" element={<Sign_Up />} />
         <Route path="sign_in" element={<Sign_In />} />
+        <Route path = "GetStarted" element={<GetStarted />}/>
         <Route path="BudgetPlanning" element={<BudgetPlanning />} />
         {/* <Route path="forgot_password" element={<Forgot_Password />} />
         <Route path="Dashboard" element={<Dashboard />} /> */}

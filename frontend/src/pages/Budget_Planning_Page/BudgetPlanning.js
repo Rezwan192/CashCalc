@@ -6,11 +6,14 @@ function BudgetPlanning() {
   const thirdCardTitle = "Unnecessary Budget";
 
   return (
-    <div id="columnLayout">
+    <div>
+      <div id="columnLayout">
       <BPCard title={firstCardTitle}></BPCard>
       <BPCard title={secondCardTitle}></BPCard>
       <BPCard title={thirdCardTitle}></BPCard>
+      </div>
     </div>
+                          
   );
 }
 
