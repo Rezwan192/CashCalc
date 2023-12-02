@@ -4,8 +4,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 function connectDatabase() {
-  mongoose //will remove URI comment later on
-    .connect(process.env.URI) //URI is mongodb+srv://CashCalc:CashCalc@databasetest.vsvj589.mongodb.net/?retryWrites=true&w=majority
+  mongoose
+    .connect(process.env.URI)
     .then(() => console.log(`connected: ${mongoose.connection.host}`)) //displays connection
     .catch((error) => {
       console.error(`Error: ${error.message}`);
