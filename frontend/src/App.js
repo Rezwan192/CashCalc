@@ -4,12 +4,13 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import "./App.css";
+import Profile from "./pages/Profile_page/Profile"
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
+      <Route path="/" element={<Layout/>}>
+        <Route index element={<Profile/>} />
 
         {/* Add more paths to page files
            <Route path="" element={< X />} />

@@ -1,0 +1,26 @@
+nav{
+    background-color: #DBE9D9;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5% 0 12% 0;
+    gap: 4rem;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.item1{
+    text-align: center;
+}
+
+
+.SideLayout{
+    display: flex;
+    width: 100%;
+
+}
+
+.MainPart{
+    flex-grow: 4;
+}
+
