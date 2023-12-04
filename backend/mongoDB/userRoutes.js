@@ -34,7 +34,7 @@ router.get("/income/:id", async (req, res) => {
     if (!userData) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e); //returns json data of userPass/:id
+    res.json(e);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -48,7 +48,7 @@ router.get("/expenses/:id", async (req, res) => {
     if (!userData) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e); //returns json data of userPass/:id
+    res.json(e);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
