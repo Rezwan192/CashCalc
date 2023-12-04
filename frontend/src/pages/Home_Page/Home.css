@@ -1,11 +1,6 @@
 .home-page {
   background: linear-gradient(to bottom, rgb(188, 225, 188) 70%, green 100%);
-  padding-bottom: 150px;
-}
-
-.home-h1 {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: bold;
+  padding-bottom: 140px;
 }
 
 .home-header {
@@ -13,6 +8,17 @@
   align-items: center;
   padding: 20px;
   margin-left: 300px;
+}
+
+.home-header img {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.home-h1 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
 }
 
 .chart {

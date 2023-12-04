@@ -34,6 +34,7 @@
 
 .signin-h2 {
   margin-top: 0px;
+  margin-left: 0px;
   margin-bottom: 30px;
 }
 
@@ -77,17 +78,20 @@
 .signin-box button {
   width: 100%;
   margin-top: 20px;
-  padding: 10px;
-  border-radius: 15px;
+  padding: 15px;
+  border-radius: 10px;
   background-color: rgb(188, 225, 188);
 }
 
 .signin-box > div:nth-child(4) {
   display: flex;
+  align-items: center;
 }
 
 .signin-box > div:nth-child(4) label {
-  flex: 1;
+  display:inline-flex;
+  align-items: center;
+  margin-right: 65px;
 }
 
 .signin-box > div:nth-child(4) a {
