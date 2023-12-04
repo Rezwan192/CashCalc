@@ -3,10 +3,10 @@ import Person from "../../assets/images/Sign_In_icon/Person.png";
 import Lock from "../../assets/images/Sign_In_icon/Lock.png";
 import Logo from "../../assets/images/Main_page_icon/Logo.png";
 import Croods_Chart from "../../assets/images/Main_page_icon/Croods_Chart.png";
-import Facebook from "../../assets/images/Main_page_icon/link_icon/Facebook.png"
-import Instagram from "../../assets/images/Main_page_icon/link_icon/Instagram.png"
-import YouTube from "../../assets/images/Main_page_icon/link_icon/YouTube.png"
-import Twitter from "../../assets/images/Main_page_icon/link_icon/Twitter.png"
+import Facebook from "../../assets/images/Main_page_icon/link_icon/Facebook.png";
+import Instagram from "../../assets/images/Main_page_icon/link_icon/Instagram.png";
+import YouTube from "../../assets/images/Main_page_icon/link_icon/YouTube.png";
+import Twitter from "../../assets/images/Main_page_icon/link_icon/Twitter.png";
 import { Link } from "react-router-dom";
 import "./Sign_In.css";
 
@@ -61,7 +61,7 @@ const SignIn = () => {
                   checked={rememberMe}
                   onChange={() => setRememberMe(!rememberMe)}
                 />
-                Remember Me
+              Remember&nbsp;Me
               </label>
               <Link to="/forgot_password">Forgot Password?</Link>
             </div>
