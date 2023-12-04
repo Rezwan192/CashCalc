@@ -12,9 +12,9 @@ function auth(pass) {
   bcrypt
     .hash(pass, saltRounds) //salts first, then hash
     .then((hash) => {
-      //console.log(`Hash: ${hash}`); //testing to see each hash iteration, will remove later
-      const e = new authSchema({ password: hash }); //adds a new item in userpasses, that being hashed pass
-      e.save(); //saves hashed password into mongoDB(success)
+      //console.log(`Hash: ${hash}`); //testing to see each hash iteration in console, will remove later
+      const e = new authSchema({ password: hash }); //adds a new item in userpasses, that being hashed pass, may remove later
+      e.save(); //saves hashed password into mongoDB(success), may remove later
     })
     .catch((err) => console.error(err.message));
 }

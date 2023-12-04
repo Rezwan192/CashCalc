@@ -9,7 +9,4 @@ Routes were made via router in userRoutes.js, and path works as intended for dis
 function, but sorts by id but its not working and can't figure it out. the idea is to have it work properly, then fetch data via id.
 more info in userRoutes.js
 
-    URI for connecting to database is included as a comment in server.js, so make your .env and include to connect to db. however,
-looking at the actual database requires an invitation so that is on todo list.
-
     Code is decently commented, but ask for any clarification!

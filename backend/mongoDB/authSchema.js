@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 
-//basic schema for auth test, our actual schema was not created just testing and learning how it works
+//basic schema for auth test
 const authSchema = mongoose.Schema(
   {
+    _id: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: true,
