@@ -34,6 +34,7 @@
 
 .signup-h2 {
   margin-top: 0px;
+  margin-left: 0px;
   margin-bottom: 30px;
 }
 
@@ -71,14 +72,20 @@
 
 .third-party-signup p {
   text-align: center;
+  margin-top: 30px;
+  margin-bottom: 25px;
 }
 
 .signup-input {
-  position: relative;
   margin-bottom: 20px;
 }
 
+.signup-input span {
+  margin-left: 5px;
+}
+
 .signup-input input {
+  margin-top: 5px;
   padding: 15px;
   width: 100%;
   box-sizing: border-box;
@@ -108,7 +115,7 @@
 }
 
 .go-to-login {
-  margin-top: 15px;
+  margin-top: 25px;
 }
 
 .go-to-login .go-login {

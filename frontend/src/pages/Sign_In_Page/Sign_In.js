@@ -66,7 +66,7 @@ const SignIn = () => {
                   checked={rememberMe}
                   onChange={() => setRememberMe(!rememberMe)}
                 />
-                Remember Me
+              Remember&nbsp;Me
               </label>
               <Link to="/forgot_password">Forgot Password?</Link>
             </div>
