@@ -8,7 +8,7 @@ h2 {
     margin: 0 auto;
     background-color: #DBE9D9;
     border-radius: 25px;
-    height: 70%;
+    height: 100%;
 }
 
 .Personal_info {
@@ -19,10 +19,10 @@ h2 {
     justify-content: center;
 }
 .image1{
-  z-index: 0;
+  z-index: -1;
 }
 .image2{
-  z-index: 1;
+  z-index: 0;
 }
 
 .image2{
@@ -98,7 +98,7 @@ input[type="file"] {
 
 .FormPart{
   position: relative;
-  margin-top: -20%;
+  margin-top: -44%;
   
 }
 
@@ -160,4 +160,8 @@ input{
   padding: 3%;
   margin: 0 auto;
   
+}
+
+.profile-page{
+  height: 84%;
 }

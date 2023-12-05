@@ -13,6 +13,8 @@ const Profile = () => {
 
   const ShowUpdateImageForm = () => {
     document.querySelector('.FormPart').style.visibility = 'initial';
+    document.querySelector('.FormPart').style.marginTop = '-30%';
+
     setCondition('ShowUpdatePhotoForm');
   };
 
@@ -23,11 +25,13 @@ const Profile = () => {
 
   const ShowUpdatAccountInformationForm = () => {
     document.querySelector('.FormPart').style.visibility = 'initial';
+    document.querySelector('.FormPart').style.marginTop = '-40%';
+
     setCondition('ShowUpdateAccountInformationForm');
   };
 
   return (
-    <div>
+    <div className="profile-page">
       <h2>Profile</h2>
       <div className="ContentPart">
         <div className="Personal_info">
