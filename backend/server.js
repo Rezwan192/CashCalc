@@ -3,11 +3,19 @@ const express = require("express");
 const cors = require("cors");
 const connectDatabase = require("./mongoDB/connectDatabase.js");
 const userRoutes = require("./mongoDB/userRoutes.js");
+const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
+
+
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
 app.use(cors());
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 connectDatabase(); //connects server to mongoDB
 
 //const pass = "Hash$2001please"; //plntxt password to test hash function
