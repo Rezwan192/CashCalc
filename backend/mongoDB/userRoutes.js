@@ -87,54 +87,21 @@ router.get("/expenses/:id", verifyToken, async (req, res) => {
   }
 });
 
-// Login route
-router.post("/login", validateFields, async (req, res) => {
-  const { email, password } = req.body;
-
-  // Check if the user exists
-  const user = await userData.findOne({ email });
-  if (!user) return res.status(400).json({ message: "Email is not found" });
-
-  try {
-    // Check if the password is correct
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(400).json({ message: "Invalid password" });
-    }
-
-    // Create and assign a token using the user object
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-    res.cookie("token", token, { httpOnly: true });
-    res.json({ message: "Logged in" });
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    res.status(500).json({ message: "Error during login" });
-  }
-});
-
-
-
-
+// Registration route
 router.post("/register", validateFields, async (req, res) => {
-  console.log(req.body);
   const { email, password, name } = req.body;
-  // Check if the user already exists
-const existingUser = await userData.findOne({ email });
-if (existingUser) {
-  // Return a response with a message
-  return res.status(400).json({ message: "Email is already registered", userData: req.body });
-}
-
 
   try {
     // Generate a salt with a specified number of rounds (e.g., 10)
     const salt = await bcrypt.genSalt(10);
 
     // Hash the password using the generated salt
-    const hashedPassword = await bcrypt.hash(password, salt);  // <-- Error here
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create a new user
+    // Create a new user with a specific _id
+    const newUserId = new mongoose.Types.ObjectId().toString();
     const newUser = new userData({
+      _id: newUserId,
       email,
       password: hashedPassword,
       name,
@@ -144,13 +111,47 @@ if (existingUser) {
     const savedUser = await newUser.save();
 
     // Create and assign a token for the newly registered user
-    const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ email: newUser.email }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true });
 
-    res.json({ message: "Registration successful", user: savedUser });
+    res.json({ message: "Registration successful" });
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error registering user" });
+  }
+});
+
+// Login route
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  // Check if the user exists
+  const user = await userData.findOne({ email });
+  console.log("User:", user); // Add this line for debugging
+
+  if (!user) return res.status(400).json({ message: "Email is not found" });
+
+  try {
+    // Check if the password is correct
+    const validPassword = await bcrypt.compare(password, user.password);
+    console.log("Password Comparison Result:", validPassword); // Add this line for debugging
+
+    if (!validPassword) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    // Create and assign a token using the user's ID
+    const token = jwt.sign({ userId: user.email }, process.env.JWT_SECRET);
+    console.log("Generated Token:", token); // Add this line for debugging
+
+    // Set the token in a cookie with httpOnly option
+    res.cookie("token", token, { httpOnly: true });
+
+    // Return a response
+    res.json({ message: "Logged in" });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error during login" });
   }
 });
 

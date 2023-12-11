@@ -9,6 +9,8 @@ import Google from "../../assets/images/sign_Up_icon/Google.png";
 import Apple from "../../assets/images/sign_Up_icon/apple.png";
 import { Link } from "react-router-dom";
 import "./Sign_Up.css";
+import { signUp } from '../../../src/api/auth';
+
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -17,7 +19,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     console.log("Signing up...");
     console.log("First Name:", firstName);
     console.log("Last Name:", lastName);
@@ -25,6 +27,22 @@ const SignUp = () => {
     console.log("Password:", password);
     console.log("Confirm Password:", confirmPassword);
     // Handle sign-up logic here
+
+    try {
+      const userData = {
+        email,
+        password,
+        name: `${firstName} ${lastName}`,
+      };
+
+      const response = await signUp(userData);
+      console.log('Registration Successful:', response);
+
+      // You can redirect to another page or perform any action on successful registration
+    } catch (error) {
+      console.error('Registration Error:', error);
+      // Handle registration error (e.g., show an error message to the user)
+    }
   };
 
   return (

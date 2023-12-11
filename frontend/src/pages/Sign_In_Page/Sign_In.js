@@ -10,6 +10,7 @@ import YouTube from "../../assets/images/Main_page_icon/link_icon/YouTube.png";
 import Twitter from "../../assets/images/Main_page_icon/link_icon/Twitter.png";
 import { Link } from "react-router-dom";
 import "./Sign_In.css";
+import { logIn } from '../../api/auth'
 
 const SignIn = () => {
   const navigate = useNavigate(); // Initialize the useHistory hook
@@ -17,15 +18,29 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     console.log("Signing in...");
     console.log("Email Address:", email);
     console.log("Password:", password);
     console.log("Remember Me:", rememberMe);
     // Handle authentication here
+    try {
+      const user = {
+        email, password };
+      // Make an API request to handle sign-in
+      const response = await logIn(user);
+
+      // Assuming your login function returns a user object or token
+      console.log("Sign-in successful:", response);
+
+      // Redirect to the desired route
+      navigate("/CashCalc");
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+      // Handle the error, e.g., show an error message to the user
+    }
 
     //This one comes only after all autentication is matched or successfully sign in
-    navigate("/CashCalc"); // Use history.push for programmatic navigation
   };
 
   return (
