@@ -3,6 +3,7 @@ const userData = require("./userSchema.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const { default: mongoose } = require("mongoose");
 
 
 const router = express.Router();
@@ -20,6 +21,18 @@ const verifyToken = (req, res, next) => {
     res.status(400).json({ message: "Invalid Token" });
   }
 };
+const validateFields = (req, res, next) => {
+  const { email, password, name } = req.body;
+
+  if (!email || !password || !name) {
+    // If any of the required fields is missing, throw an error
+    return res.status(400).json({ error: 'Please add all fields' });
+  }
+
+  // If all required fields are present, proceed to the next middleware or route
+  next();
+};
+
 
 // localhost:5000/cashcalc
 router.get("/", verifyToken, async (req, res) => {
@@ -75,37 +88,43 @@ router.get("/expenses/:id", verifyToken, async (req, res) => {
 });
 
 // Login route
-router.post("/login", async (req, res) => {
+router.post("/login", validateFields, async (req, res) => {
   const { email, password } = req.body;
 
   // Check if the user exists
   const user = await userData.findOne({ email });
   if (!user) return res.status(400).json({ message: "Email is not found" });
 
-  // Check if the password is correct
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) return res.status(400).json({ message: "Invalid password" });
+  try {
+    // Check if the password is correct
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
 
-  // Create and assign a token
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-  res.cookie("token", token, { httpOnly: true });
-  res.json({ message: "Logged in" });
+    // Create and assign a token using the user object
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    res.cookie("token", token, { httpOnly: true });
+    res.json({ message: "Logged in" });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error during login" });
+  }
 });
 
 
-router.post("/register", async (req, res) => {
+
+
+router.post("/register", validateFields, async (req, res) => {
   console.log(req.body);
   const { email, password, name } = req.body;
-
-  if (!name || !email || !password) {
-    res.status(400)
-    throw new Error('Please add all fields')
-  }
   // Check if the user already exists
-  const existingUser = await userData.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ message: "Email is already registered" + req.body });
-  }
+const existingUser = await userData.findOne({ email });
+if (existingUser) {
+  // Return a response with a message
+  return res.status(400).json({ message: "Email is already registered", userData: req.body });
+}
+
 
   try {
     // Generate a salt with a specified number of rounds (e.g., 10)
