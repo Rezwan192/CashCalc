@@ -12,6 +12,7 @@ import budgetPlanning from '../assets/images/Navbar_icon/Budget_Planning.png';
 import BudgetPlanning from "./BudgetPlanning/BudgetPlanning";
 import Dashboard from "./Dashboard/Dashboard";
 import Profile from "./Profile_page/Profile"; 
+import User_Data_Input from "./User_Data_Input/user_data_input";
 
 function Layout() {
   return (
@@ -46,9 +47,9 @@ function Layout() {
       <div className="MainPart">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="GetStarted" element={<User_Data_Input />} />
           <Route path="BudgetPlanning" element={<BudgetPlanning />} />
           <Route path="Profile" element={<Profile />} />
-
         </Routes>
       </div>
     </div>
