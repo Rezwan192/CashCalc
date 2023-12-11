@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDatabase = require("./mongoDB/connectDatabase.js");
 const userRoutes = require("./mongoDB/userRoutes.js");
 const cookieParser = require("cookie-parser");
+const updateRouter = require('./updateRouter/updateProfile.js')
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ connectDatabase(); // Connects the server to MongoDB
 
 // app.use("/userPasswords", testRoutes); // Test route to display data (for auth testing purposes, will remove later)
 app.use("/cashcalc", userRoutes); // Routes defined in userRoutes.js
+app.use("/cashcalc/update")
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

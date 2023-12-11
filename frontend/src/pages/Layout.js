@@ -1,6 +1,6 @@
 // Layout.js
 import React from "react";
-import { Outlet, Link, Route, Routes } from "react-router-dom";
+import { Outlet, Link, Route, Routes, useNavigate } from "react-router-dom";
 import "./Layout.css";
 
 import profile from '../assets/images/Profile_Page_icon/Male User.png'
@@ -8,12 +8,36 @@ import dashbord from '../assets/images/Navbar_icon/DashBoard.png'
 import getStarted from '../assets/images/Navbar_icon/Get_Started.png'
 import profile2 from '../assets/images/Navbar_icon/Profile.png'
 import budgetPlanning from '../assets/images/Navbar_icon/Budget_Planning.png';
+import dropdown from '../assets/images/Navbar_icon/DropDown.png'
 
 import BudgetPlanning from "./BudgetPlanning/BudgetPlanning";
 import Dashboard from "./Dashboard/Dashboard";
 import Profile from "./Profile_page/Profile"; 
 
+import {logout}from '../api/auth'
+
 function Layout() {
+  const navigate = useNavigate();
+const showLogOut = () => {
+  const logOutElement = document.querySelector('.LogOut'); 
+  if (logOutElement) {
+    logOutElement.style.visibility = 'visible';
+  }
+};
+
+
+// Example logout logic
+const handleLogout = async () => {
+   console.log('Logout button clicked');
+    try {
+      const response = await logout(navigate);
+      console.log(response);
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Handle logout error if needed
+    }
+};
+
   return (
     <div className="SideLayout">
       <nav>
@@ -50,6 +74,10 @@ function Layout() {
           <Route path="Profile" element={<Profile />} />
 
         </Routes>
+      </div>
+      <div className="logout">
+        <img src={dropdown} alt="Logout" onClick={showLogOut} height="30px" width></img>
+        <button className="LogOut" onClick={handleLogout}>Log out</button>
       </div>
     </div>
   );
