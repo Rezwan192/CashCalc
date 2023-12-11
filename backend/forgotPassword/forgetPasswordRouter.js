@@ -68,4 +68,73 @@ const sendResetEmail = (to, link) => {
   });
 };
 
+router.post('/reset-password/:id/:token', async (req, res) => {
+  const { id, token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    // Find the user by ID
+    const user = await userData.findOne({ _id: id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify the reset token
+    const secret = process.env.SECRET_KEY + user.password;
+    const decoded = jwt.verify(token, secret);
+
+    // Check if the token is valid
+    if (!decoded) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password
+    user.password = hashedPassword;
+    user.resetPasswordToken = null; // Clear the reset token
+    user.resetPasswordExpires = null; // Clear the expiration time
+
+    // Save the updated user
+    await user.save();
+
+    res.json({ message: 'Password reset successfully' });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: 'Error resetting password' });
+  }
+});
+router.get('/reset-password/:id/:token', async (req, res) => {
+  const { id, token } = req.params;
+
+
+  try {
+    // Find the user by ID
+    const user = await userData.findOne({ _id: id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify the reset token
+    const secret = process.env.SECRET_KEY + user.password;
+    const decoded = jwt.verify(token, secret);
+
+    // Check if the token is valid
+    if (!decoded) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+   res.render("index", {email: verify.email});
+   res.send('verified');
+    
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: 'Error resetting password' });
+  }
+});
+
 module.exports = router;
+

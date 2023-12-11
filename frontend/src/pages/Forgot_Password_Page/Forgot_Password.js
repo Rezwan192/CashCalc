@@ -7,13 +7,14 @@ import YouTube from "../../assets/images/Main_page_icon/link_icon/YouTube.png";
 import Twitter from "../../assets/images/Main_page_icon/link_icon/Twitter.png";
 import { Link } from "react-router-dom";
 import "./Forgot_Password.css";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-
+  const navigate = useNavigate();
   const handleResetPassword = async () => {
   try {
-    const response = await fetch("http://localhost:3001/forgot/forgot_password", {
+    const response = await fetch("http://localhost:3001/cashcalc/forgot/forgot_password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +30,7 @@ const ForgotPassword = () => {
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
       console.log(data);
-      // Add logic to handle success response from the server
+      <p>Reset link is sent check email</p>
     } else {
       const text = await response.text();
       console.error("Unexpected response format. Content:", text);

@@ -11,12 +11,7 @@ const forgot_password = require('./forgotPassword/forgetPasswordRouter.js');
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
-app.use(
-  cors({
-    origin: 'http://localhost:3001',
-    credentials: true,
-  })
-);
+app.use(cors());
 app.set("view engine","ejs");
 app.use(cookieParser());
 app.use(express.json()); // This line is enough to parse JSON in the request body

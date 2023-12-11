@@ -122,19 +122,20 @@ router.post("/register", validateFields, async (req, res) => {
 });
 
 // Login route
+// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   // Check if the user exists
   const user = await userData.findOne({ email });
-  console.log("User:", user); // Add this line for debugging
+  console.log("User:", user); // Debug: Log user
 
   if (!user) return res.status(400).json({ message: "Email is not found" });
 
   try {
     // Check if the password is correct
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log("Password Comparison Result:", validPassword); // Add this line for debugging
+    console.log("Password Comparison Result:", validPassword); // Debug: Log password comparison result
 
     if (!validPassword) {
       return res.status(400).json({ message: "Invalid password" });
@@ -142,7 +143,7 @@ router.post("/login", async (req, res) => {
 
     // Create and assign a token using the user's ID
     const token = jwt.sign({ userId: user.email }, process.env.JWT_SECRET);
-    console.log("Generated Token:", token); // Add this line for debugging
+    console.log("Generated Token:", token); // Debug: Log generated token
 
     // Set the token in a cookie with httpOnly option
     res.cookie("token", token, { httpOnly: true });
@@ -154,6 +155,7 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Error during login" });
   }
 });
+
 
 
 // Logout route
