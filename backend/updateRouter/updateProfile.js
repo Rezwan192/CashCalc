@@ -1,5 +1,5 @@
 const express = require("express");
-const userData = require("./userSchema.js");
+const userData = require("../mongoDB/userSchema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
