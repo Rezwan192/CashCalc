@@ -18,7 +18,33 @@ export const apiSlice = createApi({
         };
       },
     }),
+
+    UpdateUsername: builder.mutation({
+      query: ( {Id, newName}) => {
+        console.log(Id);
+        console.log(newName);
+        return {
+          url: `edit/update-profile-name/${Id}`, 
+          method: 'PUT',
+          body: newName, 
+        };
+      },
+    }),
+
+    UpdateEmailAndPassword: builder.mutation({
+      query: ( {Id, data}) => {
+        console.log(Id);
+        console.log(data);
+        return {
+          url: `edit/update-passwordAndEmail/${Id}`, 
+          method: 'PUT',
+          body: data, 
+        };
+      },
+    }),
   }),
 });
 
 export const { useGetMonthlyIncomeQuery, useUpdateMonthlyIncomeMutation } = apiSlice;
+export const { useUpdateUsernameMutation } = apiSlice;
+export const { useUpdateEmailAndPasswordMutation } = apiSlice;

@@ -8,6 +8,7 @@ import { useUpdateUsernameMutation } from "../redux/apiSlice";
 import { useSelector } from "react-redux";
 import { selectId } from "../redux/authSlice";
 import { useDispatch } from 'react-redux';
+import { useUpdateEmailAndPasswordMutation } from "../redux/apiSlice";
 
 
 const Profile = () => {
@@ -15,19 +16,44 @@ const Profile = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  //const [updateUsername] = useUpdateUsernameMutation();
   const Id = useSelector((state) => selectId(state)); // Use useSelector to get the current state  
   const dispatch = useDispatch();
 
+  const [ mutate ] = useUpdateUsernameMutation(); // Destructure the mutate function
+  const [mutate2] = useUpdateEmailAndPasswordMutation();
 
-//  const handleUpdateUsername = async () => {
-//     try {
-//       console.log('My Id rn', Id.toString());
-//       await dispatch(useUpdateUsernameMutation(Id.toString(), newUsername));
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
+
+
+ const handleUpdateUsername = async () => {
+    try {
+      console.log('My Id rn', Id.toString());
+      const stringId = Id.toString();
+      console.log(stringId);
+      const newName = newUsername;
+      await mutate({Id: stringId, newName: {newName} });
+      alert("Your username has been updated!");
+      hideForm();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const UpdateEmailAndPassword = async () => {
+    if (!newEmail || !newPassword ) return alert("Please fill out all fields.");
+    else{
+      try {
+        const data = { newPassword : newPassword, newEmail : newEmail };
+        const stringId = Id.toString();
+        await mutate2({Id: stringId, data: data});
+        hideForm();
+      }catch(error)
+      {
+        console.error(error);
+      }
+      
+    }
+
+  };
 
   const hideForm = () => {
     document.querySelector('.FormPart').style.visibility = 'hidden';
@@ -139,13 +165,20 @@ const Profile = () => {
             <div className="update-accountInformation">
           <div className="contents">
               <span>New Email</span>
-              <input className="space Email"></input>
+              <input 
+              className="space Email"
+             placeholder=""
+              onChange={(e) => setNewEmail(e.target.value)}></input>
               <span>New Password</span>
-              <input type='password' className="space NewPassword"></input>
+              <input 
+              type='password' 
+              className="space NewPassword"
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder=""></input>
               <span>Retype Password</span>
               <input type='password' className="space retypePassword"></input>
               <div className="upload_section">
-                <div className="Upload">Save</div>
+                <div className="Upload" onClick={UpdateEmailAndPassword}>Save</div>
                 <div className="Cancel" onClick={hideForm}>
                   Cancel
                 </div>

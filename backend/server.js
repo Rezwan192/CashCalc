@@ -23,7 +23,7 @@ connectDatabase(); // Connects the server to MongoDB
 app.use("/cashcalc", userRoutes); // Routes defined in userRoutes.js
 app.use("/cashcalc/update", updateRouter);
 app.use("/cashcalc/forgot/", forgot_password);
-app.use("/cashcalc/edit", editProfile);
+app.use("/cashcalc/edit/", editProfile);
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
