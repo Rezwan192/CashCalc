@@ -3,7 +3,7 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const userData = require('../mongoDB/userSchema'); // Replace with your user schema
+const userData = require('../mongoDB/userSchema'); 
 
 router.post('/forgot_password', async (req, res) => {
   const { email } = req.body;
