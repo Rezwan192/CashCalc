@@ -87,6 +87,20 @@ router.get("/expenses/:id", verifyToken, async (req, res) => {
   }
 });
 
+// localhost:5000/cashcalc/expenses/:id
+router.get("/budget/:id", verifyToken, async (req, res) => {
+  try {
+    const e = await userData.findById(req.params.id, "budget");
+    if (!userData) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    res.json(e);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error retrieving data" });
+  }
+});
+
 // Registration route
 router.post("/register", validateFields, async (req, res) => {
   const { email, password, name } = req.body;
@@ -132,7 +146,7 @@ router.post("/login", async (req, res) => {
   if (!user) return res.status(400).json({ message: "Email is not found" });
 
   try {
-    // Check if the password is correct
+   // Check if the password is correct
     const validPassword = await bcrypt.compare(password, user.password);
     console.log("Password Comparison Result:", validPassword); // Debug: Log password comparison result
 
@@ -147,7 +161,7 @@ router.post("/login", async (req, res) => {
     // Set the token in a cookie with httpOnly option
     res.cookie("token", token, { httpOnly: true });
 
-    res.send( user._id);
+    res.send( user._id); 
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error during login" });
@@ -165,7 +179,7 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully" });
 });
 
-//localhost:5000/cashcalc/:id/income
+//localhost:3001/cashcalc/:id/income
 router.put("/:id/income", async (req, res) => {
   console.log("Request Body:", req.body); 
   const { source, category, date, amount } = req.body;
@@ -186,6 +200,46 @@ router.put("/:id/income", async (req, res) => {
   }
 });
 
+//localhost:3001/cashcalc/:id/expenses
+router.put("/:id/expenses", async (req, res) => {
+  console.log("Request Body:", req.body); 
+  const { recipient, category, date, amount } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    // Add monthly expense entry
+    user.monthly_expenses.push({ recipient, category, date, amount });
+    await user.save();
+
+    res.json(user.monthly_expenses);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating monthly expenses" });
+  }
+});
+
+//localhost:3001/cashcalc/:id/budget
+router.put("/:id/budget", async (req, res) => {
+  console.log("Request Body:", req.body); 
+  const { budget } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update budget
+    user.budget = budget;
+    await user.save();
+
+    res.json(user.budget);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating budget" });
+  }
+});
 
 module.exports = router;
