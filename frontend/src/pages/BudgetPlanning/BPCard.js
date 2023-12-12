@@ -26,6 +26,8 @@ function BPCard({ title }) {
   }
   
   return(
+    <>
+    <div className="bigContainer">
   <div className="BPcard">
     <h2>{title}</h2>
     { isTitleOne && <> 
@@ -55,6 +57,9 @@ function BPCard({ title }) {
         <p id="rightaligned">${nec.Price}</p>
       </div>);})}</>
     }
+  </div>
   <div id="buttondiv"><button id="bpbutton" onClick={HandleClick}>+</button>&nbsp; Add Item</div>
-  </div>);}
+  </div>
+  
+  </>);}
 export default BPCard;

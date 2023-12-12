@@ -10,7 +10,7 @@ export const apiSlice = createApi({
     // ... other endpoints
 
     updateMonthlyIncome: builder.mutation({
-      query: ( Id, incomeData) => {
+      query: ( {Id, incomeData}) => {
         return {
           url: `${Id}/income`, 
           method: 'PUT',

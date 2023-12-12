@@ -29,10 +29,10 @@ export default function User_Data_Input() {
   const handleSubmit = async () => {
     // Update the global state
     dispatch(addIncome(incomeData));
+    const stringId = Id.toString();
     // Update the database
-    console.log('Id:', Id);
     try { 
- await mutate(Id.toString(), incomeData);
+     await mutate({Id: stringId, incomeData: incomeData});
     } catch (error) {
       console.error("Error updating monthly income:", error);
     }

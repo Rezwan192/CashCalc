@@ -36,7 +36,7 @@ const SignIn = () => {
     console.log("API Response:", response);
 
     // Assuming the response contains the Id property
-    const { Id } = response;
+    const Id = response;
 
     // Log the Id for debugging
     console.log("Retrieved Id:", Id);

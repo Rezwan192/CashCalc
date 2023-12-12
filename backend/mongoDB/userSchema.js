@@ -35,11 +35,19 @@ const userSchema = mongoose.Schema({
         type: String,
         required: false,
       },
-      name: {
+      source: {
         type: String,
         required: false,
       },
-      total: {
+      category: {
+        type: String, 
+        required: false,
+      },
+      date: {
+        type: Date,
+        required: false,
+      },
+      amount: {
         type: Number,
         required: false,
       },
