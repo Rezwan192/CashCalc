@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import the useHistory hook
+import { useNavigate } from "react-router-dom"; 
 import Person from "../../assets/images/Sign_In_icon/Person.png";
 import Lock from "../../assets/images/Sign_In_icon/Lock.png";
 import Logo from "../../assets/images/Main_page_icon/Logo.png";
@@ -10,13 +10,16 @@ import YouTube from "../../assets/images/Main_page_icon/link_icon/YouTube.png";
 import Twitter from "../../assets/images/Main_page_icon/link_icon/Twitter.png";
 import { Link } from "react-router-dom";
 import "./Sign_In.css";
-import { logIn } from '../../api/auth'
+import { logIn } from '../../api/auth';
+import { useDispatch } from 'react-redux';
+import { saveId } from '../redux/authSlice';
 
 const SignIn = () => {
-  const navigate = useNavigate(); // Initialize the useHistory hook
+  const navigate = useNavigate(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSignIn = async () => {
     console.log("Signing in...");
@@ -27,11 +30,22 @@ const SignIn = () => {
     try {
       const user = {
         email, password };
-      // Make an API request to handle sign-in
       const response = await logIn(user);
+    
+    // Log the entire response for debugging
+    console.log("API Response:", response);
+
+    // Assuming the response contains the Id property
+    const { Id } = response;
+
+    // Log the Id for debugging
+    console.log("Retrieved Id:", Id);
+
+    // Save the token to the Redux store
+    dispatch(saveId(Id));
 
       // Assuming your login function returns a user object or token
-      console.log("Sign-in successful:", response);
+      console.log("Sign-in successful:");
 
       // Redirect to the desired route
       navigate("/CashCalc");

@@ -13,10 +13,14 @@ import dropdown from '../assets/images/Navbar_icon/DropDown.png'
 import BudgetPlanning from "./BudgetPlanning/BudgetPlanning";
 import Dashboard from "./Dashboard/Dashboard";
 import Profile from "./Profile_page/Profile"; 
+import User_Data_Input from "./User_data_input/user_data_input";
 
-import {logout}from '../api/auth'
+import { useSelector } from "react-redux"; // Importing useSelector
+
+import {logout} from '../api/auth'
 
 function Layout() {
+  const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 const showLogOut = () => {
   const logOutElement = document.querySelector('.LogOut'); 
@@ -52,7 +56,7 @@ const handleLogout = async () => {
         </div>
 
         <div className="items">
-          <Link to="/CashCalc/GetStarted" className="linkName">Get Started </Link>
+          <Link to="/CashCalc/User_input" className="linkName">Get Started </Link>
           <img src={getStarted} alt="Dashboard" />
         </div>
 
@@ -68,10 +72,12 @@ const handleLogout = async () => {
 
       </nav>
       <div className="MainPart">
+        <p> ${token}</p>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="BudgetPlanning" element={<BudgetPlanning />} />
           <Route path="Profile" element={<Profile />} />
+          <Route path="User_input" element={<User_Data_Input/>} />
 
         </Routes>
       </div>

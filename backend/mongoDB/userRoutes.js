@@ -60,7 +60,7 @@ router.get("/:id", verifyToken, async (req, res) => {
 });
 
 // localhost:5000/cashcalc/income/:id
-router.get("/income/:id", verifyToken, async (req, res) => {
+router.get("/income/:id", async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "monthly_income");
     if (!userData) {
@@ -122,7 +122,6 @@ router.post("/register", validateFields, async (req, res) => {
 });
 
 // Login route
-// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -142,14 +141,13 @@ router.post("/login", async (req, res) => {
     }
 
     // Create and assign a token using the user's ID
-    const token = jwt.sign({ userId: user.email }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
     console.log("Generated Token:", token); // Debug: Log generated token
 
     // Set the token in a cookie with httpOnly option
     res.cookie("token", token, { httpOnly: true });
 
-    // Return a response
-    res.json({ message: "Logged in" });
+    res.send( user._id);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error during login" });
@@ -165,6 +163,27 @@ router.post("/logout", (req, res) => {
 
   // Return a response indicating successful logout
   res.json({ message: "Logged out successfully" });
+});
+
+//localhost:5000/cashcalc/:id/income
+router.put("/:id/income", async (req, res) => {
+  console.log("Request Body:", req.body); 
+  const { source, category, date, amount } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Add monthly income entry
+    user.monthly_income.push({ source, category, date, amount });
+    await user.save();
+
+    res.json(user.monthly_income);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating monthly income" });
+  }
 });
 
 
