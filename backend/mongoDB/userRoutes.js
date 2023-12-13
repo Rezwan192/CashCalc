@@ -59,8 +59,8 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/income/:id
-router.get("/income/:id", async (req, res) => {
+// localhost:5000/cashcalc/:id/income
+router.get("/:id/income", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "monthly_income");
     if (!userData) {
@@ -73,8 +73,8 @@ router.get("/income/:id", async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/expenses/:id
-router.get("/expenses/:id", verifyToken, async (req, res) => {
+// localhost:5000/cashcalc/:idexpenses
+router.get("/:id/expenses", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "monthly_expenses");
     if (!userData) {
@@ -87,8 +87,8 @@ router.get("/expenses/:id", verifyToken, async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/expenses/:id
-router.get("/budget/:id", verifyToken, async (req, res) => {
+// localhost:5000/cashcalc/budget/:id
+router.get("/:id/budget", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "budget");
     if (!userData) {
