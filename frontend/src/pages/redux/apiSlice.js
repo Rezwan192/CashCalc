@@ -8,26 +8,26 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getMonthlyIncome: builder.query({
       query: (Id) => ({
-        url: `${Id}/income`,
+        url: `income/${Id}`,
         method: "GET",
       }),
     }),
     getMonthlyExpenses: builder.query({
       query: (Id) => ({
-        url: `${Id}/expenses`,
+        url: `expenses/${Id}`,
         method: "GET",
       }),
     }),
     getBudget: builder.query({
       query: (Id) => ({
-        url: `${Id}/budget`,
+        url: `budget/${Id}`,
         method: "GET",
       }),
     }),
     updateMonthlyIncome: builder.mutation({
       query: ({ Id, incomeData }) => {
         return {
-          url: `${Id}/income`,
+          url: `income/${Id}`,
           method: "PUT",
           body: incomeData,
         };
@@ -36,7 +36,7 @@ export const apiSlice = createApi({
     updateMonthlyExpenses: builder.mutation({
       query: ({ Id, expensesData }) => {
         return {
-          url: `${Id}/expenses`,
+          url: `expenses/${Id}`,
           method: "PUT",
           body: expensesData,
         };
@@ -45,7 +45,7 @@ export const apiSlice = createApi({
     updateBudget: builder.mutation({
       query: ({ Id, budgetData }) => {
         return {
-          url: `${Id}/budget`,
+          url: `budget/${Id}`,
           method: "PUT",
           body: budgetData,
         };

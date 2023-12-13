@@ -59,8 +59,8 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/:id/income
-router.get("/:id/income", verifyToken, async (req, res) => {
+// localhost:5000/cashcalc/income/:id
+router.get("/income/:id", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "monthly_income");
     if (!userData) {
@@ -73,8 +73,8 @@ router.get("/:id/income", verifyToken, async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/:idexpenses
-router.get("/:id/expenses", verifyToken, async (req, res) => {
+// localhost:5000/cashcalc/expenses/:id
+router.get("/expenses/:id", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "monthly_expenses");
     if (!userData) {
@@ -88,7 +88,7 @@ router.get("/:id/expenses", verifyToken, async (req, res) => {
 });
 
 // localhost:5000/cashcalc/budget/:id
-router.get("/:id/budget", verifyToken, async (req, res) => {
+router.get("/budget/:id", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id, "budget");
     if (!userData) {
@@ -179,8 +179,8 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully" });
 });
 
-//localhost:3001/cashcalc/:id/income
-router.put("/:id/income", async (req, res) => {
+//localhost:3001/cashcalc/income/:id
+router.put("/income/:id", async (req, res) => {
   console.log("Request Body:", req.body); 
   const { source, category, date, amount } = req.body;
   try {
@@ -200,8 +200,8 @@ router.put("/:id/income", async (req, res) => {
   }
 });
 
-//localhost:3001/cashcalc/:id/expenses
-router.put("/:id/expenses", async (req, res) => {
+//localhost:3001/cashcalc/expenses/:id
+router.put("/expenses/:id", async (req, res) => {
   console.log("Request Body:", req.body); 
   const { recipient, category, date, amount } = req.body;
   try {
@@ -221,8 +221,8 @@ router.put("/:id/expenses", async (req, res) => {
   }
 });
 
-//localhost:3001/cashcalc/:id/budget
-router.put("/:id/budget", async (req, res) => {
+//localhost:3001/cashcalc/budget/:id
+router.put("/budget/:id", async (req, res) => {
   console.log("Request Body:", req.body); 
   const { budget } = req.body;
   try {
