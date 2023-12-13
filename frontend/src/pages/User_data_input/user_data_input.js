@@ -25,7 +25,9 @@ export default function User_Data_Input() {
   const dispatch = useDispatch();
 
   // Set empty budget value
-  const [budgetData, setBudgetData] = useState("");
+  const [budgetData, setBudgetData] = useState({
+    budget: "",
+  });
 
   // Set an empty income object
   const [incomeData, setIncomeData] = useState({
@@ -43,9 +45,12 @@ export default function User_Data_Input() {
     amount: "",
   });
 
-  const handleBudgetInputChange = (event) => {
+  const handleBudgetInputChange = (event, field) => {
     // Set budgetData
-    setBudgetData(event.target.value);
+    setBudgetData({
+      ...budgetData,
+      [field]: event.target.value,
+    });
   };
 
   const handleIncomeInputChange = (event, field) => {
@@ -74,7 +79,9 @@ export default function User_Data_Input() {
       console.error("Error updating budget:", error);
     }
     // Reset budgetData for subsequent entries
-    setBudgetData("");
+    setBudgetData({
+      budget: "",
+    });
   };
 
   const handleSubmitIncome = async () => {
@@ -121,8 +128,8 @@ export default function User_Data_Input() {
         Budget:
         <input
           type="number"
-          value={budgetData}
-          onChange={(e) => handleBudgetInputChange(e)}
+          value={budgetData.budget}
+          onChange={(e) => handleBudgetInputChange(e, "budget")}
           placeholder="Enter budget"
         />
       </label>

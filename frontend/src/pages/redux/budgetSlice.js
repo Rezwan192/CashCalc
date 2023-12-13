@@ -8,7 +8,7 @@ export const budgetSlice = createSlice({
   reducers: {
     // Update budget
     addBudget: (state, action) => {
-      state.budget = action.payload; 
+      state.budget = action.payload.budget; 
     },
   },
 });
