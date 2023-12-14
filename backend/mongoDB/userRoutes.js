@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const { default: mongoose } = require("mongoose");
 
-
 const router = express.Router();
 
 // Middleware to verify JWT
@@ -26,13 +25,12 @@ const validateFields = (req, res, next) => {
 
   if (!email || !password || !name) {
     // If any of the required fields is missing, throw an error
-    return res.status(400).json({ error: 'Please add all fields' });
+    return res.status(400).json({ error: "Please add all fields" });
   }
 
   // If all required fields are present, proceed to the next middleware or route
   next();
 };
-
 
 // localhost:5000/cashcalc
 router.get("/", verifyToken, async (req, res) => {
@@ -60,13 +58,15 @@ router.get("/:id", verifyToken, async (req, res) => {
 });
 
 // localhost:5000/cashcalc/income/:id
-router.get("/income/:id", verifyToken, async (req, res) => {
+router.get("/income/:id", async (req, res) => {
   try {
-    const e = await userData.findById(req.params.id, "monthly_income");
-    if (!userData) {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e);
+    const fetchedIncome = user.monthly_income;
+    console.log("Monthly Income:", fetchedIncome);
+    res.json(fetchedIncome);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -74,13 +74,15 @@ router.get("/income/:id", verifyToken, async (req, res) => {
 });
 
 // localhost:5000/cashcalc/expenses/:id
-router.get("/expenses/:id", verifyToken, async (req, res) => {
+router.get("/expenses/:id", async (req, res) => {
   try {
-    const e = await userData.findById(req.params.id, "monthly_expenses");
-    if (!userData) {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e);
+    const fetchedExpenses = user.monthly_expenses;
+    console.log("Monthly Expenses:", fetchedExpenses);
+    res.json(fetchedExpenses);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -88,13 +90,15 @@ router.get("/expenses/:id", verifyToken, async (req, res) => {
 });
 
 // localhost:5000/cashcalc/budget/:id
-router.get("/budget/:id", verifyToken, async (req, res) => {
+router.get("/budget/:id", async (req, res) => {
   try {
-    const e = await userData.findById(req.params.id, "budget");
-    if (!userData) {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e);
+    const fetchedBudget = user.budget;
+    console.log("Budget", fetchedBudget);
+    res.json(fetchedBudget);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -146,7 +150,7 @@ router.post("/login", async (req, res) => {
   if (!user) return res.status(400).json({ message: "Email is not found" });
 
   try {
-   // Check if the password is correct
+    // Check if the password is correct
     const validPassword = await bcrypt.compare(password, user.password);
     console.log("Password Comparison Result:", validPassword); // Debug: Log password comparison result
 
@@ -161,14 +165,12 @@ router.post("/login", async (req, res) => {
     // Set the token in a cookie with httpOnly option
     res.cookie("token", token, { httpOnly: true });
 
-    res.send( user._id); 
+    res.send(user._id);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error during login" });
   }
 });
-
-
 
 // Logout route
 router.post("/logout", (req, res) => {
@@ -181,7 +183,7 @@ router.post("/logout", (req, res) => {
 
 //localhost:3001/cashcalc/income/:id
 router.put("/income/:id", async (req, res) => {
-  console.log("Request Body:", req.body); 
+  console.log("Request Body:", req.body);
   const { source, category, date, amount } = req.body;
   try {
     const user = await userData.findById(req.params.id);
@@ -202,7 +204,7 @@ router.put("/income/:id", async (req, res) => {
 
 //localhost:3001/cashcalc/expenses/:id
 router.put("/expenses/:id", async (req, res) => {
-  console.log("Request Body:", req.body); 
+  console.log("Request Body:", req.body);
   const { recipient, category, date, amount } = req.body;
   try {
     const user = await userData.findById(req.params.id);
@@ -223,7 +225,7 @@ router.put("/expenses/:id", async (req, res) => {
 
 //localhost:3001/cashcalc/budget/:id
 router.put("/budget/:id", async (req, res) => {
-  console.log("Request Body:", req.body); 
+  console.log("Request Body:", req.body);
   const { budget } = req.body;
   try {
     const user = await userData.findById(req.params.id);

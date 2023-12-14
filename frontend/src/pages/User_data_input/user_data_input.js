@@ -6,6 +6,9 @@ import {
   useUpdateMonthlyIncomeMutation,
   useUpdateMonthlyExpensesMutation,
   useUpdateBudgetMutation,
+  useGetMonthlyIncomeQuery,
+  useGetMonthlyExpensesQuery,
+  useGetBudgetQuery,
 } from "../redux/apiSlice";
 import { selectId } from "../redux/authSlice";
 import { addBudget } from "../redux/budgetSlice";
@@ -21,6 +24,24 @@ export default function User_Data_Input() {
 
   const Id = useSelector((state) => selectId(state));
   const stringId = Id.toString();
+
+  const {
+    data: fetchedBudgetData,
+    error: budgetError,
+    isLoading: isBudgetLoading,
+  } = useGetBudgetQuery(stringId);
+
+  const {
+    data: fetchedIncomeData,
+    error: incomeError,
+    isLoading: isIncomeLoading,
+  } = useGetMonthlyIncomeQuery(stringId);
+
+  const {
+    data: fetchedExpensesData,
+    error: expensesError,
+    isLoading: isExpensesLoading,
+  } = useGetMonthlyExpensesQuery(stringId);
 
   const dispatch = useDispatch();
 
@@ -104,7 +125,7 @@ export default function User_Data_Input() {
 
   const handleSubmitExpense = async () => {
     // Update the global state
-    dispatch(addExpense(expensesData));
+    // dispatch(addExpense(expensesData));
     // Update the database
     try {
       await mutateExpenses({ Id: stringId, expensesData: expensesData });
@@ -135,7 +156,14 @@ export default function User_Data_Input() {
       </label>
       <br />
       <button onClick={handleSubmitBudget}>Submit</button>
-      <p>Current Budget: {budget}</p>
+      {isBudgetLoading ? (
+        <p>Loading budget data...</p>
+      ) : budgetError ? (
+        <p>Error loading budget data</p>
+      ) : fetchedBudgetData ? (
+        <p>Current Budget: {fetchedBudgetData}</p>
+      ) : null}
+      {/* <p>Current Budget: {budget}</p> */}
       <h3>Enter Monthly Income</h3>
       <label>
         Source:
@@ -178,14 +206,28 @@ export default function User_Data_Input() {
       </label>
       <br />
       <button onClick={handleSubmitIncome}>Submit</button>
-      {monthly_income.map((incomeEntry, index) => (
+      {isIncomeLoading ? (
+        <p>Loading income data...</p>
+      ) : incomeError ? (
+        <p>Error loading income data</p>
+      ) : fetchedIncomeData ? (
+        fetchedIncomeData.map((incomeEntry, index) => (
+          <div key={index}>
+            <p>Source: {incomeEntry.source}</p>
+            <p>Category: {incomeEntry.category}</p>
+            <p>Date: {incomeEntry.date}</p>
+            <p>Amount: {incomeEntry.amount}</p>
+          </div>
+        ))
+      ) : null}
+      {/* {monthly_income.map((incomeEntry, index) => (
         <div key={index}>
           <p>Source: {incomeEntry.source}</p>
           <p>Category: {incomeEntry.category}</p>
           <p>Date: {incomeEntry.date}</p>
           <p>Amount: {incomeEntry.amount}</p>
         </div>
-      ))}
+      ))} */}
       <h3>Enter Monthly Expenses</h3>
       <label>
         Recipient:
@@ -228,14 +270,28 @@ export default function User_Data_Input() {
       </label>
       <br />
       <button onClick={handleSubmitExpense}>Submit</button>
-      {monthly_expenses.map((expenseEntry, index) => (
+      {isExpensesLoading ? (
+        <p>Loading expenses data...</p>
+      ) : expensesError ? (
+        <p>Error loading expenses data</p>
+      ) : fetchedExpensesData ? (
+        fetchedExpensesData.map((expenseEntry, index) => (
+          <div key={index}>
+            <p>Recipient: {expenseEntry.recipient}</p>
+            <p>Category: {expenseEntry.category}</p>
+            <p>Date: {expenseEntry.date}</p>
+            <p>Amount: {expenseEntry.amount}</p>
+          </div>
+        ))
+      ) : null}
+      {/* {monthly_expenses.map((expenseEntry, index) => (
         <div key={index}>
           <p>Recipient: {expenseEntry.recipient}</p>
           <p>Category: {expenseEntry.category}</p>
           <p>Date: {expenseEntry.date}</p>
           <p>Amount: {expenseEntry.amount}</p>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }
