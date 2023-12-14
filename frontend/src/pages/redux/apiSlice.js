@@ -62,6 +62,17 @@ export const apiSlice = createApi({
   },
 }),
 
+showUserDetails: builder.mutation({
+  query: ( {Id}) => {
+        console.log(Id);
+        return {
+          url: `cashcalc/getUserData/${Id}`, 
+          method: 'GET',
+        };
+      },
+
+})
+
   }),
 });
 
