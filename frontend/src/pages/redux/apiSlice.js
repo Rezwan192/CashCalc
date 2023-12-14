@@ -42,9 +42,30 @@ export const apiSlice = createApi({
         };
       },
     }),
+
+    UpdateProfileImage: builder.mutation({
+    query: ({ id, file }) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    console.log(formData);
+
+    return {
+      url: `edit/uploadImage/${id}`,
+      method: 'POST',
+      body: formData,
+      headers: {
+        // Note: Do not set Content-Type here, as it will be automatically set by FormData.
+        
+      },
+    };
+  },
+}),
+
   }),
 });
 
 export const { useGetMonthlyIncomeQuery, useUpdateMonthlyIncomeMutation } = apiSlice;
 export const { useUpdateUsernameMutation } = apiSlice;
 export const { useUpdateEmailAndPasswordMutation } = apiSlice;
+export const { useUpdateProfileImageMutation } = apiSlice;

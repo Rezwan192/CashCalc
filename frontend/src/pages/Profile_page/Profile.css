@@ -21,7 +21,15 @@ h2 {
     align-items: center;
     justify-content: center;
 }
-.image1{
+.image1 {
+  width: 200px;
+  /* Set your desired width */
+  height: 200px;
+  /* Set your desired height, should be the same as width */
+  border-radius: 50%;
+  /* This makes the element a circle */
+  object-fit: cover;
+  /* Ensures the image covers the entire circle without stretching */
   z-index: -1;
 }
 .image2{

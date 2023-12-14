@@ -4,7 +4,6 @@ const cors = require("cors");
 const connectDatabase = require("./mongoDB/connectDatabase.js");
 const userRoutes = require("./mongoDB/userRoutes.js");
 const cookieParser = require("cookie-parser");
-const updateRouter = require('./updateRouter/updateProfile.js');
 
 const forgot_password = require('./forgotPassword/forgetPasswordRouter.js');
 const editProfile = require("../backend/mongoDB/editProfile.js")
@@ -21,7 +20,6 @@ connectDatabase(); // Connects the server to MongoDB
 
 // app.use("/userPasswords", testRoutes); // Test route to display data (for auth testing purposes, will remove later)
 app.use("/cashcalc", userRoutes); // Routes defined in userRoutes.js
-app.use("/cashcalc/update", updateRouter);
 app.use("/cashcalc/forgot/", forgot_password);
 app.use("/cashcalc/edit/", editProfile);
 app.listen(port, () => {

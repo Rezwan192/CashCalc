@@ -17,6 +17,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+  profileImage: {
+    data: Buffer, // Binary data for the image
+    contentType: String, // MIME type of the image (e.g., 'image/jpeg', 'image/png')
+  },
   budget: {
     type: Number,
     required: false,

@@ -1,5 +1,5 @@
 // Layout.js
-import React from "react";
+import React, { useState , useEffect} from "react";
 import { Outlet, Link, Route, Routes, useNavigate } from "react-router-dom";
 import "./Layout.css";
 
@@ -15,38 +15,48 @@ import Dashboard from "./Dashboard/Dashboard";
 import Profile from "./Profile_page/Profile"; 
 import User_Data_Input from "./User_data_input/user_data_input";
 
-import { useSelector } from "react-redux"; // Importing useSelector
+import { useSelector } from "react-redux";
+import { selectId } from "./redux/authSlice";
+import { useDispatch } from 'react-redux';
+import { fetchProfileImage } from './redux/profileImageSlice';
+
 
 import {logout} from '../api/auth'
 
 function Layout() {
+  const { imageSrc, status, error } = useSelector((state) => state.profileImage);
+  const Id = useSelector((state) => selectId(state));
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProfileImage(Id.toString()));
+  }, [dispatch, Id.toString()]);
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
-const showLogOut = () => {
-  const logOutElement = document.querySelector('.LogOut'); 
-  if (logOutElement) {
-    logOutElement.style.visibility = 'visible';
-  }
-};
 
+  const showLogOut = () => {
+    const logOutElement = document.querySelector('.LogOut');
+    if (logOutElement) {
+      logOutElement.style.visibility = 'visible';
+    }
+  };
 
-// Example logout logic
-const handleLogout = async () => {
-   console.log('Logout button clicked');
+  const handleLogout = async () => {
+    console.log('Logout button clicked');
     try {
       const response = await logout(navigate);
       console.log(response);
     } catch (error) {
       console.error('Logout failed:', error);
-      // Handle logout error if needed
     }
-};
+  };
+
 
   return (
     <div className="SideLayout">
       <nav>
         <div className="item1">
-          <img src={profile} alt="Profile" height="250px" width="250px"/>
+           <img src={imageSrc ? imageSrc : profile} className="image" alt="Profile" width="200" height = "200"></img>
           Username
         </div>
 
@@ -72,7 +82,7 @@ const handleLogout = async () => {
 
       </nav>
       <div className="MainPart">
-        <p> ${token}</p>
+       
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="BudgetPlanning" element={<BudgetPlanning />} />

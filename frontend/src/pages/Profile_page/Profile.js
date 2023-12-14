@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from 'axios';
+import React, { useState , useEffect} from "react";
 import "./Profile.css";
 import profile from "../../assets/images/Profile_Page_icon/Male User.png";
 import image1 from "../../assets/images/Profile_Page_icon/photo.png";
@@ -9,6 +10,8 @@ import { useSelector } from "react-redux";
 import { selectId } from "../redux/authSlice";
 import { useDispatch } from 'react-redux';
 import { useUpdateEmailAndPasswordMutation } from "../redux/apiSlice";
+import { fetchProfileImage } from '../redux/profileImageSlice';
+
 
 
 const Profile = () => {
@@ -16,12 +19,20 @@ const Profile = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [image, setImage] = useState("");
+
+
   const Id = useSelector((state) => selectId(state)); // Use useSelector to get the current state  
   const dispatch = useDispatch();
 
+
   const [ mutate ] = useUpdateUsernameMutation(); // Destructure the mutate function
   const [mutate2] = useUpdateEmailAndPasswordMutation();
+  const { imageSrc, status, error } = useSelector((state) => state.profileImage);
 
+    useEffect(() => {
+    dispatch(fetchProfileImage(Id.toString()));
+  }, [dispatch, Id.toString()]);
 
 
  const handleUpdateUsername = async () => {
@@ -55,6 +66,39 @@ const Profile = () => {
 
   };
 
+  const handleImageUpload = async (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append("image", image);
+
+  try {
+    const result = await axios.post(
+      `http://localhost:3001/cashcalc/edit/uploadImage/${Id}`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+
+    // After a successful upload, dispatch fetchProfileImage to update the image in the Redux store
+    await dispatch(fetchProfileImage(Id.toString()));
+
+    // After fetching the updated image, hide the form
+    hideForm();
+  } catch (error) {
+    console.error(error);
+    // Handle the error as needed
+  }
+};
+
+
+
+const onInputChange = (e) => {
+  console.log(e.target.files[0]);
+  setImage(e.target.files[0]);
+};
+
+
   const hideForm = () => {
     document.querySelector('.FormPart').style.visibility = 'hidden';
   };
@@ -84,7 +128,8 @@ const Profile = () => {
       <div className="ContentPart">
         <div className="Personal_info">
           <div className="image-container">
-            <img src={profile} className="image1" alt="Profile"></img>
+           <img src={imageSrc ? imageSrc : profile} className="image1" alt="Profile" width="200" height = "200"></img>
+          
             <img
               src={image1}
               className="image2"
@@ -132,10 +177,14 @@ const Profile = () => {
               <label htmlFor="fileInput" className="custom-file-upload">
                 Choose file
               </label>
-              <input type="file" id="fileInput" />
+              <input 
+              type="file" 
+              id="fileInput" 
+              name="image"
+              onChange={onInputChange}/>
             </div>
             <div className="upload_section">
-              <div className="Upload">Upload</div>
+              <div className="Upload" onClick={handleImageUpload}>Upload</div>
               <div className="Cancel" onClick={hideForm}>
                 Cancel
               </div>
