@@ -10,10 +10,15 @@ export const fetchProfileImage = createAsyncThunk(
       const response = await axios.get(`http://localhost:3001/cashcalc/edit/getProfileImage/${userId}`, {
         responseType: 'blob', // Set the response type to 'blob' to handle binary data
       });
-
+       if(!response.data)
+       {
+        return null;
+       }
+       else{
       const blob = response.data;
       const url = URL.createObjectURL(blob);
       return url;
+       }
     } catch (error) {
       return thunkAPI.rejectWithValue('Error fetching image');
     }

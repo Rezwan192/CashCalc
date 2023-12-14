@@ -56,7 +56,7 @@ function Layout() {
     <div className="SideLayout">
       <nav>
         <div className="item1">
-           <img src={imageSrc ? imageSrc : profile} className="image" alt="Profile" width="200" height = "200"></img>
+           <img src={imageSrc ? imageSrc : profile} className="image" alt="Profile"></img>
           Username
         </div>
 

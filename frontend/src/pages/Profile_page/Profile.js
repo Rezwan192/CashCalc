@@ -128,6 +128,7 @@ const onInputChange = (e) => {
       <div className="ContentPart">
         <div className="Personal_info">
           <div className="image-container">
+            <>{imageSrc}</>
            <img src={imageSrc ? imageSrc : profile} className="image1" alt="Profile" width="200" height = "200"></img>
           
             <img
