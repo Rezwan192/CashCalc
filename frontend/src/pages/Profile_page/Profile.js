@@ -44,7 +44,7 @@ const Profile = () => {
   if (userDetails) {
     setDisplayUsername(userDetails.name);
     setDisplayUserEmail(userDetails.email);
-    setDisplayPasswordInAsterisk(userDetails.PasswordLength);
+    setDisplayPasswordInAsterisk(userDetails.password_length);
   }
 }, [userDetails]);
 
