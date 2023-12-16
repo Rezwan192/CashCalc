@@ -11,7 +11,7 @@ import { selectId } from "../redux/authSlice";
 import { useDispatch } from 'react-redux';
 import { useUpdateEmailAndPasswordMutation } from "../redux/apiSlice";
 import { fetchProfileImage } from '../redux/profileImageSlice';
-
+import { useGetShowUserDetailsQuery } from '../redux/userAccountInfoSlice'
 
 
 const Profile = () => {
@@ -20,19 +20,36 @@ const Profile = () => {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [image, setImage] = useState("");
+  const [displayUserName, setDisplayUsername] = useState("");
+  const [displayUserEmail, setDisplayUserEmail]= useState("");
+  const [displayPasswordInasterisk, setDisplayPasswordInAsterisk] = useState("");
+
+
 
 
   const Id = useSelector((state) => selectId(state)); // Use useSelector to get the current state  
   const dispatch = useDispatch();
 
-
   const [ mutate ] = useUpdateUsernameMutation(); // Destructure the mutate function
   const [mutate2] = useUpdateEmailAndPasswordMutation();
   const { imageSrc, status, error } = useSelector((state) => state.profileImage);
+  const { userDetails } = useSelector ((state) => state.userAccountInfo);
 
     useEffect(() => {
-    dispatch(fetchProfileImage(Id.toString()));
+    dispatch(fetchProfileImage(Id.toString()));  
   }, [dispatch, Id.toString()]);
+
+    useEffect(() => {
+  dispatch(useGetShowUserDetailsQuery(Id.toString()));
+  if (userDetails) {
+    setDisplayUsername(userDetails.name);
+    setDisplayUserEmail(userDetails.email);
+    setDisplayPasswordInAsterisk(userDetails.PasswordLength);
+  }
+}, [userDetails]);
+
+
+  
 
 
  const handleUpdateUsername = async () => {
@@ -138,7 +155,7 @@ const onInputChange = (e) => {
             ></img>
           </div>
           <div className="detail">
-            Username
+            {displayUserName}
             <img
               className="edit"
               src={edit}
@@ -164,9 +181,12 @@ const onInputChange = (e) => {
           </div>
           <div className="info">
             <div className="items">Email</div>
-            <div className="items">abc@gmail.com</div>
+            <div className="items">{displayUserEmail}</div>
             <div className="items">Password</div>
-            <div className="items">********</div>
+           <div className="items">
+          {Array(displayPasswordInasterisk).fill('*').join('')}
+           </div>
+
           </div>
         </div>
       </div>

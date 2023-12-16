@@ -76,7 +76,12 @@ showUserDetails: builder.mutation({
   }),
 });
 
-export const { useGetMonthlyIncomeQuery, useUpdateMonthlyIncomeMutation } = apiSlice;
-export const { useUpdateUsernameMutation } = apiSlice;
-export const { useUpdateEmailAndPasswordMutation } = apiSlice;
-export const { useUpdateProfileImageMutation } = apiSlice;
+export const {
+  useGetMonthlyIncomeQuery,
+  useUpdateMonthlyIncomeMutation,
+  useUpdateUsernameMutation,
+  useUpdateEmailAndPasswordMutation,
+  useUpdateProfileImageMutation,
+  useGetShowUserDetailsQuery, // Include the showUserDetails endpoint
+} = apiSlice;
+
