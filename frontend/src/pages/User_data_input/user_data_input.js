@@ -1,22 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIncome } from "../redux/incomeSlice";
-import { addExpense } from "../redux/expensesSlice";
 import {
   useUpdateMonthlyIncomeMutation,
   useUpdateMonthlyExpensesMutation,
   useUpdateBudgetMutation,
-  useGetMonthlyIncomeQuery,
-  useGetMonthlyExpensesQuery,
-  useGetBudgetQuery,
 } from "../redux/apiSlice";
+import { fetchBudget } from "../redux/budgetSlice";
+import { fetchIncome } from "../redux/incomeSlice";
+import { fetchExpenses } from "../redux/expensesSlice";
 import { selectId } from "../redux/authSlice";
-import { addBudget } from "../redux/budgetSlice";
 
 export default function User_Data_Input() {
+  const { budget } = useSelector((state) => state.budgetData);
   const { monthly_income } = useSelector((state) => state.incomeData);
   const { monthly_expenses } = useSelector((state) => state.expensesData);
-  const { budget } = useSelector((state) => state.budgetData);
 
   const [mutateIncome] = useUpdateMonthlyIncomeMutation();
   const [mutateExpenses] = useUpdateMonthlyExpensesMutation();
@@ -25,30 +22,19 @@ export default function User_Data_Input() {
   const Id = useSelector((state) => selectId(state));
   const stringId = Id.toString();
 
-  const {
-    data: fetchedBudgetData,
-    error: budgetError,
-    isLoading: isBudgetLoading,
-  } = useGetBudgetQuery(stringId);
-
-  const {
-    data: fetchedIncomeData,
-    error: incomeError,
-    isLoading: isIncomeLoading,
-  } = useGetMonthlyIncomeQuery(stringId);
-
-  const {
-    data: fetchedExpensesData,
-    error: expensesError,
-    isLoading: isExpensesLoading,
-  } = useGetMonthlyExpensesQuery(stringId);
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBudget(stringId));
+    dispatch(fetchIncome(stringId));
+    dispatch(fetchExpenses(stringId));
+  }, [dispatch, stringId]);
 
   // Set empty budget value
   const [budgetData, setBudgetData] = useState({
     budget: "",
   });
+
 
   // Set an empty income object
   const [incomeData, setIncomeData] = useState({
@@ -91,11 +77,11 @@ export default function User_Data_Input() {
   };
 
   const handleSubmitBudget = async () => {
-    // Update the global state
-    dispatch(addBudget(budgetData));
-    // Update the database
     try {
+      // Update the database
       await mutateBudget({ Id: stringId, budgetData: budgetData });
+      // Update the global state by fetching from the database
+      dispatch(fetchBudget(stringId));
     } catch (error) {
       console.error("Error updating budget:", error);
     }
@@ -106,11 +92,11 @@ export default function User_Data_Input() {
   };
 
   const handleSubmitIncome = async () => {
-    // Update the global state
-    dispatch(addIncome(incomeData));
     // Update the database
     try {
       await mutateIncome({ Id: stringId, incomeData: incomeData });
+      // Update the global state by fetching from the database
+      dispatch(fetchIncome(stringId));
     } catch (error) {
       console.error("Error updating monthly income:", error);
     }
@@ -124,11 +110,11 @@ export default function User_Data_Input() {
   };
 
   const handleSubmitExpense = async () => {
-    // Update the global state
-    // dispatch(addExpense(expensesData));
     // Update the database
     try {
       await mutateExpenses({ Id: stringId, expensesData: expensesData });
+      // Update the global state by fetching from the database
+      dispatch(fetchExpenses(stringId));
     } catch (error) {
       console.error("Error updating monthly expenses:", error);
     }
@@ -156,14 +142,7 @@ export default function User_Data_Input() {
       </label>
       <br />
       <button onClick={handleSubmitBudget}>Submit</button>
-      {isBudgetLoading ? (
-        <p>Loading budget data...</p>
-      ) : budgetError ? (
-        <p>Error loading budget data</p>
-      ) : fetchedBudgetData ? (
-        <p>Current Budget: {fetchedBudgetData}</p>
-      ) : null}
-      {/* <p>Current Budget: {budget}</p> */}
+      <p>Current Budget: {budget}</p>
       <h3>Enter Monthly Income</h3>
       <label>
         Source:
@@ -206,28 +185,14 @@ export default function User_Data_Input() {
       </label>
       <br />
       <button onClick={handleSubmitIncome}>Submit</button>
-      {isIncomeLoading ? (
-        <p>Loading income data...</p>
-      ) : incomeError ? (
-        <p>Error loading income data</p>
-      ) : fetchedIncomeData ? (
-        fetchedIncomeData.map((incomeEntry, index) => (
-          <div key={index}>
-            <p>Source: {incomeEntry.source}</p>
-            <p>Category: {incomeEntry.category}</p>
-            <p>Date: {incomeEntry.date}</p>
-            <p>Amount: {incomeEntry.amount}</p>
-          </div>
-        ))
-      ) : null}
-      {/* {monthly_income.map((incomeEntry, index) => (
+      {monthly_income.map((incomeEntry, index) => (
         <div key={index}>
           <p>Source: {incomeEntry.source}</p>
           <p>Category: {incomeEntry.category}</p>
           <p>Date: {incomeEntry.date}</p>
           <p>Amount: {incomeEntry.amount}</p>
         </div>
-      ))} */}
+      ))}
       <h3>Enter Monthly Expenses</h3>
       <label>
         Recipient:
@@ -270,28 +235,14 @@ export default function User_Data_Input() {
       </label>
       <br />
       <button onClick={handleSubmitExpense}>Submit</button>
-      {isExpensesLoading ? (
-        <p>Loading expenses data...</p>
-      ) : expensesError ? (
-        <p>Error loading expenses data</p>
-      ) : fetchedExpensesData ? (
-        fetchedExpensesData.map((expenseEntry, index) => (
-          <div key={index}>
-            <p>Recipient: {expenseEntry.recipient}</p>
-            <p>Category: {expenseEntry.category}</p>
-            <p>Date: {expenseEntry.date}</p>
-            <p>Amount: {expenseEntry.amount}</p>
-          </div>
-        ))
-      ) : null}
-      {/* {monthly_expenses.map((expenseEntry, index) => (
+      {monthly_expenses.map((expenseEntry, index) => (
         <div key={index}>
           <p>Recipient: {expenseEntry.recipient}</p>
           <p>Category: {expenseEntry.category}</p>
           <p>Date: {expenseEntry.date}</p>
           <p>Amount: {expenseEntry.amount}</p>
         </div>
-      ))} */}
+      ))}
     </div>
   );
 }

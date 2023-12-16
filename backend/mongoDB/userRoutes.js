@@ -32,7 +32,7 @@ const validateFields = (req, res, next) => {
   next();
 };
 
-// localhost:5000/cashcalc
+// localhost:3001/cashcalc
 router.get("/", verifyToken, async (req, res) => {
   try {
     const e = await userData.find({});
@@ -43,7 +43,7 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/:id
+// localhost:3001/cashcalc/:id
 router.get("/:id", verifyToken, async (req, res) => {
   try {
     const e = await userData.findById(req.params.id);
@@ -57,7 +57,7 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/income/:id
+// localhost:3001/cashcalc/income/:id
 router.get("/income/:id", async (req, res) => {
   try {
     const user = await userData.findById(req.params.id);
@@ -73,7 +73,7 @@ router.get("/income/:id", async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/expenses/:id
+// localhost:3001/cashcalc/expenses/:id
 router.get("/expenses/:id", async (req, res) => {
   try {
     const user = await userData.findById(req.params.id);
@@ -89,7 +89,7 @@ router.get("/expenses/:id", async (req, res) => {
   }
 });
 
-// localhost:5000/cashcalc/budget/:id
+// localhost:3001/cashcalc/budget/:id
 router.get("/budget/:id", async (req, res) => {
   try {
     const user = await userData.findById(req.params.id);
@@ -99,6 +99,38 @@ router.get("/budget/:id", async (req, res) => {
     const fetchedBudget = user.budget;
     console.log("Budget", fetchedBudget);
     res.json(fetchedBudget);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error retrieving data" });
+  }
+});
+
+// localhost:3001/cashcalc/total_income/:id
+router.get("/total_income/:id", async (req, res) => {
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    const fetchedTotalIncome = user.total_income;
+    console.log("Total Income", fetchedTotalIncome);
+    res.json(fetchedTotalIncome);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error retrieving data" });
+  }
+});
+
+// localhost:3001/cashcalc/total_expenses/:id
+router.get("/total_expenses/:id", async (req, res) => {
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    const fetchedTotalExpenses = user.total_expenses;
+    console.log("Total Expenses", fetchedTotalExpenses);
+    res.json(fetchedTotalExpenses);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -241,6 +273,48 @@ router.put("/budget/:id", async (req, res) => {
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error updating budget" });
+  }
+});
+
+//localhost:3001/cashcalc/total_income/:id
+router.put("/total_income/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const { total_income } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update total income
+    user.total_income = total_income;
+    await user.save();
+
+    res.json(user.total_income);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating total income" });
+  }
+});
+
+//localhost:3001/cashcalc/total_expenses/:id
+router.put("/total_expenses/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const { total_expenses } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update budget
+    user.total_expenses = total_expenses;
+    await user.save();
+
+    res.json(user.total_expenses);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating total expenses" });
   }
 });
 

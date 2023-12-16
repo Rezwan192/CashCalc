@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchBudget = createAsyncThunk(
-  "budgetData/fetchBudget",
+export const fetchTotalIncome = createAsyncThunk(
+  "totalIncomeData/fetchTotalIncome",
   async (userId, thunkAPI) => {
     console.log(userId);
     try {
       const response = await axios.get(
-        `http://localhost:3001/cashcalc/budget/${userId}`
+        `http://localhost:3001/cashcalc/total_income/${userId}`
       );
       if (!response.data) {
         return null;
@@ -15,33 +15,33 @@ export const fetchBudget = createAsyncThunk(
         return response.data;
       }
     } catch (error) {
-      return thunkAPI.rejectWithValue("Error fetching budget");
+      return thunkAPI.rejectWithValue("Error fetching total income");
     }
   }
 );
 
-export const budgetSlice = createSlice({
-  name: "budgetData",
+export const totalIncomeSlice = createSlice({
+  name: "totalIncomeData",
   initialState: {
-    budget: 0,
+    total_income: 0,
     status: "idle",
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchBudget.pending, (state) => {
+      .addCase(fetchTotalIncome.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchBudget.fulfilled, (state, action) => {
+      .addCase(fetchTotalIncome.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.budget = action.payload;
+        state.total_income = action.payload;
       })
-      .addCase(fetchBudget.rejected, (state, action) => {
+      .addCase(fetchTotalIncome.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
   },
 });
 
-export default budgetSlice.reducer;
+export default totalIncomeSlice.reducer;

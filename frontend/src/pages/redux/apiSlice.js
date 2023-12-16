@@ -24,6 +24,18 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
+    getTotalIncome: builder.query({
+      query: (Id) => ({
+        url: `total_income/${Id}`,
+        method: "GET",
+      }),
+    }),
+    getTotalExpenses: builder.query({
+      query: (Id) => ({
+        url: `total_expenses/${Id}`,
+        method: "GET",
+      }),
+    }),
     updateMonthlyIncome: builder.mutation({
       query: ({ Id, incomeData }) => {
         return {
@@ -51,6 +63,24 @@ export const apiSlice = createApi({
         };
       },
     }),
+    updateTotalIncome: builder.mutation({
+      query: ({ Id, totalIncomeData }) => {
+        return {
+          url: `total_income/${Id}`,
+          method: "PUT",
+          body: totalIncomeData,
+        };
+      },
+    }),
+    updateTotalExpenses: builder.mutation({
+      query: ({ Id, totalExpensesData }) => {
+        return {
+          url: `total_expenses/${Id}`,
+          method: "PUT",
+          body: totalExpensesData,
+        };
+      },
+    }),
   }),
 });
 
@@ -58,7 +88,11 @@ export const {
   useGetMonthlyIncomeQuery,
   useGetMonthlyExpensesQuery,
   useGetBudgetQuery,
+  useGetTotalIncomeQuery,
+  useGetTotalExpensesQuery,
   useUpdateMonthlyIncomeMutation,
   useUpdateMonthlyExpensesMutation,
   useUpdateBudgetMutation,
+  useUpdateTotalIncomeMutation,
+  useUpdateTotalExpensesMutation,
 } = apiSlice;

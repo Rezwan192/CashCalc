@@ -21,6 +21,14 @@ const userSchema = mongoose.Schema({
     type: Number,
     required: false,
   },
+  total_income: {
+    type: Number,
+    required: false,
+  },
+  total_expenses: {
+    type: Number,
+    required: false,
+  },
   savings: {
     type: Number,
     required: false,
