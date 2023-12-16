@@ -32,6 +32,26 @@ const validateFields = (req, res, next) => {
   next();
 };
 
+//localhost:3001/cashcalc/expenses/need/:id/:expenseid
+router.put("/expenses/need/:id/:expenseid", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const {needvalue} = req.body;
+  const expenseId = req.params.expenseid;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // update need of specific expense entry
+    result = await userData.findByIdAndUpdate("657ddd226e5000c3d387729a",{"need" : "medium"})
+    await user.save();
+    res.json(result); 
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating need value" });
+  }
+});
+
 // localhost:5000/cashcalc
 router.get("/", verifyToken, async (req, res) => {
   try {
