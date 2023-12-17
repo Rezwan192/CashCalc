@@ -4,24 +4,13 @@ import renderSavings from "./savingsGraph";
 import {
   useGetMonthlyIncomeQuery,
   useGetMonthlyExpensesQuery,
-  useGetBudgetQuery,
 } from "../redux/apiSlice";
 import { selectId } from "../redux/authSlice";
 import { useSelector } from "react-redux";
 import "./Dashboard.css";
 
 function Dashboard() {
-  /*
-        {isIncomeLoading ? (
-          <p>Loading income data...</p>
-        ) : incomeError ? (
-          <p>Error loading income data</p>
-        ) : fetchedIncomeData ? (
-          <>incArray = JSON.parse(JSON.stringify(fetchedIncomeData))</>
-        ) : null}
-*/
-
-  //TODO: solve undefined parse error, figure out dislay of savings and expenses right tab
+  //TODO: figure out dislay of savings and expenses right tab
   const [Income, setIncome] = useState("100");
   const [Expenses, setExpenses] = useState("100");
   const [Spent, setSpent] = useState("100");
@@ -39,34 +28,36 @@ function Dashboard() {
     error: expensesError,
     isLoading: isExpensesLoading,
   } = useGetMonthlyExpensesQuery(stringId);
-  const {
-    data: fetchedBudgetData,
-    error: budgetError,
-    isLoading: isBudgetLoading,
-  } = useGetBudgetQuery(stringId);
 
-  //const tempArray1 = fetchedIncomeData;
+  //temp array to leave "spent" div blank
   const tempArray2 = [];
-
+  //copies monthly_income to incArray
   const incArray = fetchedIncomeData;
-  /*
-  let modifiedIncArr = incArray.map(function (incArrayTime) {
+  //copies monthly_expenses to expArray
+  const expArray = fetchedExpensesData;
+  //cocats expArray to incArray,
+  const concatArray = incArray.concat(expArray);
+  //test to view concat success, will remove later
+  console.log(concatArray);
+
+  //map function to format Date field to remove clock
+  let modifiedArr = concatArray.map(function (e) {
     return {
-      ...incArrayTime,
-      date: new Date(incArrayTime.date).toISOString().split("T")[0],
+      ...e,
+      date: new Date(e.date).toISOString().split("T")[0],
     };
   });
-  modifiedIncArr.sort(function (a, b) {
-    // Turn your strings into dates, and then subtract them
-    // to get a value that is either negative, positive, or zero.
+  //sorts Date in array from earliest date in x month to most current date in x month
+  modifiedArr.sort(function (a, b) {
     return new Date(a.date) - new Date(b.date);
   });
-  //const expArray = JSON.parse(JSON.stringify(fetchedExpensesData));
-  */
-  console.log(incArray);
+  //test to view format in console, will remove later
+  console.log(modifiedArr);
+  //to replace graph represenation, remove modifiedArr to array of choosing
   const renderGraph = (
-    <LineChart width={700} height={300} data={incArray}>
+    <LineChart width={700} height={300} data={modifiedArr}>
       <Line type="monotone" dataKey="incomeAmount" stroke="#8884d8" />
+      <Line type="monotone" dataKey="expenseAmount" stroke="FF0000" />
       <XAxis dataKey="date" />
       <Tooltip />
     </LineChart>

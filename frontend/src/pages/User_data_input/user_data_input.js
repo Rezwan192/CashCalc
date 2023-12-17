@@ -41,7 +41,7 @@ export default function User_Data_Input() {
     source: "",
     category: "",
     date: "",
-    amount: "",
+    incomeAmount: "",
   });
 
   // Set an empty expense object
@@ -49,7 +49,7 @@ export default function User_Data_Input() {
     recipient: "",
     category: "",
     date: "",
-    amount: "",
+    expenseAmount: "",
   });
 
   const handleBudgetInputChange = (event, field) => {
