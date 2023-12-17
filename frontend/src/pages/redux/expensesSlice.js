@@ -37,14 +37,20 @@ export const expensesSlice = createSlice({
         state.status = "succeeded";
         if (state.monthly_expenses.length === 0) {
           // Concatenate database array to monthly_expenses if monthly_income is empty
-          state.monthly_expenses = state.monthly_expenses.concat(action.payload);
+          state.monthly_expenses = state.monthly_expenses.concat(
+            action.payload
+          );
         } else if (state.monthly_expenses.length === action.payload.length) {
           // State remains unchanged if monthly_expenses is not empty and
           // if its length is equal to the database array (identical arrays)
         } else {
           // State is updated with new elements if monthly_expenses is not empty and if its length
           // is not equal to the database array's length (new elements were added to database)
-          for (let i = state.monthly_expenses.length; i < action.payload.length; i++) {
+          for (
+            let i = state.monthly_expenses.length;
+            i < action.payload.length;
+            i++
+          ) {
             state.monthly_expenses.push(action.payload[i]);
           }
         }

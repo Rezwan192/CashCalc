@@ -44,7 +44,11 @@ export const incomeSlice = createSlice({
         } else {
           // State is updated with new elements if monthly_income is not empty and if its length
           // is not equal to the database array's length (new elements were added to database)
-          for (let i = state.monthly_income.length; i < action.payload.length; i++) {
+          for (
+            let i = state.monthly_income.length;
+            i < action.payload.length;
+            i++
+          ) {
             state.monthly_income.push(action.payload[i]);
           }
         }

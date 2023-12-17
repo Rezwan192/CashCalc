@@ -21,14 +21,6 @@ const userSchema = mongoose.Schema({
     type: Number,
     required: false,
   },
-  total_income: {
-    type: Number,
-    required: false,
-  },
-  total_expenses: {
-    type: Number,
-    required: false,
-  },
   savings: {
     type: Number,
     required: false,
@@ -48,14 +40,14 @@ const userSchema = mongoose.Schema({
         required: false,
       },
       category: {
-        type: String, 
+        type: String,
         required: false,
       },
       date: {
         type: Date,
         required: false,
       },
-      amount: {
+      incomeAmount: {
         type: Number,
         required: false,
       },
@@ -72,14 +64,14 @@ const userSchema = mongoose.Schema({
         required: false,
       },
       category: {
-        type: String, 
+        type: String,
         required: false,
       },
       date: {
         type: Date,
         required: false,
       },
-      amount: {
+      expenseAmount: {
         type: Number,
         required: false,
       },

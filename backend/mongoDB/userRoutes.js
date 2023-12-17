@@ -216,7 +216,7 @@ router.post("/logout", (req, res) => {
 //localhost:3001/cashcalc/income/:id
 router.put("/income/:id", async (req, res) => {
   console.log("Request Body:", req.body);
-  const { source, category, date, amount } = req.body;
+  const { source, category, date, incomeAmount } = req.body;
   try {
     const user = await userData.findById(req.params.id);
     if (!user) {
@@ -224,7 +224,7 @@ router.put("/income/:id", async (req, res) => {
     }
 
     // Add monthly income entry
-    user.monthly_income.push({ source, category, date, amount });
+    user.monthly_income.push({ source, category, date, incomeAmount });
     await user.save();
 
     res.json(user.monthly_income);
@@ -237,7 +237,7 @@ router.put("/income/:id", async (req, res) => {
 //localhost:3001/cashcalc/expenses/:id
 router.put("/expenses/:id", async (req, res) => {
   console.log("Request Body:", req.body);
-  const { recipient, category, date, amount } = req.body;
+  const { recipient, category, date, expenseAmount } = req.body;
   try {
     const user = await userData.findById(req.params.id);
     if (!user) {
@@ -245,7 +245,7 @@ router.put("/expenses/:id", async (req, res) => {
     }
 
     // Add monthly expense entry
-    user.monthly_expenses.push({ recipient, category, date, amount });
+    user.monthly_expenses.push({ recipient, category, date, expenseAmount });
     await user.save();
 
     res.json(user.monthly_expenses);
