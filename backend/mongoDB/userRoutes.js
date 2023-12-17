@@ -32,26 +32,6 @@ const validateFields = (req, res, next) => {
   next();
 };
 
-//localhost:3001/cashcalc/expenses/need/:id/:expenseid
-router.put("/expenses/need/:id/:expenseid", async (req, res) => {
-  console.log("Request Body:", req.body);
-  const {needvalue} = req.body;
-  const expenseId = req.params.expenseid;
-  try {
-    const user = await userData.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    // update need of specific expense entry
-    result = await userData.findByIdAndUpdate("657ddd226e5000c3d387729a",{"need" : "medium"})
-    await user.save();
-    res.json(result); 
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    res.status(500).json({ message: "Error updating need value" });
-  }
-});
-
 // localhost:5000/cashcalc
 router.get("/", verifyToken, async (req, res) => {
   try {
@@ -263,5 +243,31 @@ router.put("/budget/:id", async (req, res) => {
     res.status(500).json({ message: "Error updating budget" });
   }
 });
+
+//localhost:3001/cashcalc/expenses/need/:expenseid
+router.put("/expenses/need/:expenseid", async (req, res) => {
+  console.log("request params:", req.params);
+  console.log("Request Body:", req.body);
+  const expenseId = req.params.expenseid;
+  req.body._id = expenseId;
+  try {
+    const result = await userData.findOneAndUpdate(
+      {'monthly_expenses._id': expenseId},
+      {$set:{'monthly_expenses.$': req.body}},
+      {new: true}
+    );
+    console.log(result);
+    if(result){
+      res.json(result);
+    } else {
+      res.status(404).json({error: 'Something went wrong'});
+    }
+  }
+  catch(error){
+    console.log(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating need" });
+  }
+});
+
 
 module.exports = router;
