@@ -80,9 +80,9 @@ function Layout() {
       <div className="MainPart">
         <p> ${token}</p>
         <Routes>
-          <Route path="/" element={<Profile />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="BudgetPlanning" element={<BudgetPlanning />} />
-          <Route path="Profile" element={<Dashboard />} />
+          <Route path="Profile" element={<Profile />} />
           <Route path="User_input" element={<User_Data_Input />} />
         </Routes>
       </div>

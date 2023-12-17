@@ -1,4 +1,4 @@
-import { useState, React } from "react";
+import { useState, useEffect, React } from "react";
 import {
   LineChart,
   Line,
@@ -15,28 +15,29 @@ import {
   useGetMonthlyIncomeQuery,
   useGetMonthlyExpensesQuery,
 } from "../redux/apiSlice";
-import { fetchExpenses } from "../redux/expensesSlice";
+import { fetchTotalExpenses } from "../redux/totalExpensesSlice";
+import { fetchTotalIncome } from "../redux/totalIncomeSlice";
 import { selectId } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "./Dashboard.css";
 
 function Dashboard() {
   //TODO: figure out display of savings and expenses right tab
-  const [Income, setIncome] = useState("100");
-  const [Expenses, setExpenses] = useState("100");
   const [Spent, setSpent] = useState("100");
   const { monthly_expenses } = useSelector((state) => state.expensesData);
+  const { total_expenses } = useSelector((state) => state.totalExpensesData);
+  const { total_income } = useSelector((state) => state.totalIncomeData);
 
   const Id = useSelector((state) => selectId(state));
   const stringId = Id.toString();
 
-  /*
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchExpenses(stringId));
+    dispatch(fetchTotalIncome(stringId));
+    dispatch(fetchTotalExpenses(stringId));
   }, [dispatch, stringId]);
-*/
+
   const {
     data: fetchedIncomeData,
     error: incomeError,
@@ -148,14 +149,14 @@ function Dashboard() {
           Income
           <br />{" "}
         </section>
-        {Income}
+        $ {total_income}
       </div>
       <div className="totalExpense">
         <section className="colorRed">
           Expense
           <br />{" "}
         </section>
-        {Expenses}
+        $ {total_expenses}
       </div>
       <div className="spent">
         Spent <br />
@@ -169,7 +170,7 @@ function Dashboard() {
         {monthly_expenses.map((expenseEntry, index) => (
           <div key={index}>
             <p>
-              {expenseEntry.recipient}: {expenseEntry.expenseAmount}
+              {expenseEntry.recipient}: $ {expenseEntry.expenseAmount}
             </p>
           </div>
         ))}
