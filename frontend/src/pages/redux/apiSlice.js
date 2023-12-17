@@ -53,9 +53,9 @@ export const apiSlice = createApi({
     }),
         // update need of specific expense entry
     updateNeed: builder.mutation({
-      query: ({ Id, ExpenseID, needData }) => {
+      query: ({ExpenseID, needData }) => {
         return {
-          url: `expenses/need/${Id}/${ExpenseID}`,
+          url: `expenses/need/${ExpenseID}`,
           method: "PUT",
           body: needData,
         };
