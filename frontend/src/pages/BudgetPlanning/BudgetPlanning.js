@@ -7,7 +7,7 @@ import {
   useGetMonthlyExpensesQuery,
   useUpdateNeedMutation,
 } from "../redux/apiSlice";
-let needValue="", expenseID;
+let expenseID, expenseRecipient, expenseCategory, expenseDate, expenseAmount, expenseNeed;
 function BudgetPlanning() {
   const [condition, setCondition] = useState("none");
   const firstCardTitle = "Necessary Budget";
@@ -30,30 +30,31 @@ function BudgetPlanning() {
   function logKey(somevalue)
   {
     expenseID = somevalue._id;
-    // expenseID = somevalue;
+    expenseRecipient = somevalue.recipient;
+    expenseCategory = somevalue.category;
+    expenseDate = somevalue.date;
+    expenseAmount = somevalue.amount;
   }
   function handleNecessary(){
-    needValue = "necessary";
+    expenseNeed = "necessary";
   }
   function handleMedium(){
-    needValue = "medium";
+    expenseNeed = "medium";
   }
   function handleUnnecessary(){
-    needValue = "unnecessary";
+    expenseNeed = "unnecessary";
   }
 
   const handleConfirm = async () => {
-    //TODO
-    //pass userID needValue and expenseID to put route
-    //put route will find user by userId, select as user.
-    //then put route will find expense by expenseID, change need to the need that I passed.  
-    // console.log(needValue);
-    // console.log(expenseID);
     const needInfo = {
-      need: needValue,
+      recipient: expenseRecipient,
+      category: expenseCategory,
+      date: expenseDate,
+      amount: expenseAmount,
+      need: expenseNeed,
     };
     try {
-      await mutateNeed({ Id: stringId, ExpenseID: expenseID, needData: needInfo });
+      await mutateNeed({ExpenseID: expenseID, needData: needInfo });
     } catch (error) {
       console.error("Error updating need:", error);
     }
@@ -83,7 +84,7 @@ function BudgetPlanning() {
             <div key={index}>
               <p>Recipient: {expenseEntry.recipient} ${expenseEntry.amount} </p>
               <p>Category: {expenseEntry.category}</p>
-              <button onClick={() => logKey({index})}>select expense</button>
+              <button onClick={() => logKey(expenseEntry)}>select expense</button>
            </div>
        ))
      ) : null}
