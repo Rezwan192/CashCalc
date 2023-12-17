@@ -4,10 +4,14 @@ import {
   useUpdateMonthlyIncomeMutation,
   useUpdateMonthlyExpensesMutation,
   useUpdateBudgetMutation,
+  useUpdateTotalExpensesMutation,
+  useUpdateTotalIncomeMutation,
 } from "../redux/apiSlice";
 import { fetchBudget } from "../redux/budgetSlice";
 import { fetchIncome } from "../redux/incomeSlice";
 import { fetchExpenses } from "../redux/expensesSlice";
+import { fetchTotalExpenses } from "../redux/totalExpensesSlice";
+import { fetchTotalIncome } from "../redux/totalIncomeSlice";
 import { selectId } from "../redux/authSlice";
 import "./user_data_input.css";
 
@@ -15,10 +19,15 @@ export default function User_Data_Input() {
   const { budget } = useSelector((state) => state.budgetData);
   const { monthly_income } = useSelector((state) => state.incomeData);
   const { monthly_expenses } = useSelector((state) => state.expensesData);
+  const { total_expenses } = useSelector((state) => state.totalExpensesData);
+  const { total_income } = useSelector((state) => state.totalIncomeData);
 
   const [mutateIncome] = useUpdateMonthlyIncomeMutation();
   const [mutateExpenses] = useUpdateMonthlyExpensesMutation();
   const [mutateBudget] = useUpdateBudgetMutation();
+  const [mutateTotalExpenses] = useUpdateTotalExpensesMutation();
+  const [mutateTotalIncome] = useUpdateTotalIncomeMutation();
+
 
   const Id = useSelector((state) => selectId(state));
   const stringId = Id.toString();
@@ -30,6 +39,70 @@ export default function User_Data_Input() {
     dispatch(fetchIncome(stringId));
     dispatch(fetchExpenses(stringId));
   }, [dispatch, stringId]);
+
+  const [totalExpensesData, setTotalExpensesData] = useState({
+    total_expenses: 0,
+  });
+
+  const [totalIncomeData, setTotalIncomeData] = useState({
+    total_income: 0,
+  });
+
+  const calculateTotalIncome = async () => {
+    try {
+      let income_sum = 0;
+      for (let i = 0; i < monthly_income.length; i++) {
+        income_sum += monthly_income[i].amount;
+      }
+      console.log(`income_sum: ${income_sum}`);
+      setTotalIncomeData((prevTotalIncomeData) => ({
+        ...prevTotalIncomeData,
+        total_income: income_sum,
+      }));
+      console.log(`totalIncomeData: ${totalIncomeData.total_income}`);
+      await mutateTotalIncome({
+        Id: stringId,
+        totalIncomeData: { total_income: income_sum },
+      });
+      dispatch(fetchTotalIncome(stringId));
+    } catch (error) {
+      console.error("Error updating monthly income:", error);
+    }
+  };
+
+  const calculateTotalExpenses = async () => {
+    try {
+      let expenses_sum = 0;
+      for (let i = 0; i < monthly_expenses.length; i++) {
+        expenses_sum += monthly_expenses[i].amount;
+      }
+      console.log(`expenses_sum: ${expenses_sum}`);
+      setTotalExpensesData((prevTotalExpensesData) => ({
+        ...prevTotalExpensesData,
+        total_expenses: expenses_sum,
+      }));
+      console.log(`totalExpensesData: ${totalExpensesData.total_expenses}`);
+      await mutateTotalExpenses({
+        Id: stringId,
+        totalExpensesData: { total_expenses: expenses_sum },
+      });
+      dispatch(fetchTotalExpenses(stringId));
+    } catch (error) {
+      console.error("Error updating monthly expenses:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (monthly_expenses.length > 0) {
+      calculateTotalExpenses();
+    }
+  }, [monthly_expenses]);
+
+  useEffect(() => {
+    if (monthly_income.length > 0) {
+      calculateTotalIncome();
+    }
+  }, [monthly_income]);
 
   // Set empty budget value
   const [budgetData, setBudgetData] = useState({
@@ -97,6 +170,7 @@ export default function User_Data_Input() {
       await mutateIncome({ Id: stringId, incomeData: incomeData });
       // Update the global state by fetching from the database
       dispatch(fetchIncome(stringId));
+      calculateTotalIncome();
     } catch (error) {
       console.error("Error updating monthly income:", error);
     }
@@ -115,6 +189,7 @@ export default function User_Data_Input() {
       await mutateExpenses({ Id: stringId, expensesData: expensesData });
       // Update the global state by fetching from the database
       dispatch(fetchExpenses(stringId));
+      calculateTotalExpenses();
     } catch (error) {
       console.error("Error updating monthly expenses:", error);
     }
@@ -201,6 +276,11 @@ export default function User_Data_Input() {
         </button>
       </div>
       <p className="income-array-title">Monthly Income Entries:</p>
+      {total_income === undefined ? (
+        <p>Loading...</p>
+      ) : (
+        <p>Total Expenses: {total_income}</p>
+      )}
       {monthly_income.map((incomeEntry, index) => (
         <div className="get-started-entry" key={index}>
           <p>Source: {incomeEntry.source}</p>
@@ -260,6 +340,11 @@ export default function User_Data_Input() {
         </button>
       </div>
       <p className="expenses-array-title">Monthly Expenses Entries:</p>
+      {total_expenses === undefined ? (
+        <p>Loading...</p>
+      ) : (
+        <p>Total Expenses: {total_expenses}</p>
+      )}
       {monthly_expenses.map((expenseEntry, index) => (
         <div className="get-started-entry" key={index}>
           <p>Recipient: {expenseEntry.recipient}</p>
