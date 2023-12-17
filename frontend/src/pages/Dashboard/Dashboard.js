@@ -3,6 +3,7 @@ import {
   LineChart,
   Line,
   XAxis,
+  YAxis,
   Tooltip,
   PieChart,
   Pie,
@@ -14,8 +15,9 @@ import {
   useGetMonthlyIncomeQuery,
   useGetMonthlyExpensesQuery,
 } from "../redux/apiSlice";
+import { fetchExpenses } from "../redux/expensesSlice";
 import { selectId } from "../redux/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Dashboard.css";
 
 function Dashboard() {
@@ -23,10 +25,18 @@ function Dashboard() {
   const [Income, setIncome] = useState("100");
   const [Expenses, setExpenses] = useState("100");
   const [Spent, setSpent] = useState("100");
+  const { monthly_expenses } = useSelector((state) => state.expensesData);
 
   const Id = useSelector((state) => selectId(state));
   const stringId = Id.toString();
 
+  /*
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchExpenses(stringId));
+  }, [dispatch, stringId]);
+*/
   const {
     data: fetchedIncomeData,
     error: incomeError,
@@ -155,13 +165,14 @@ function Dashboard() {
 
       <div className="expensesList">
         <section>---------------------------------------</section>
-        <section className="color">Expenses</section>
-        <body>
-          Rent: 1000$ <br />
-          Food: 500$ <br />
-          Transportation: 200$ <br />
-          Other: 300$
-        </body>
+        <section className="bold">Expenses</section>
+        {monthly_expenses.map((expenseEntry, index) => (
+          <div key={index}>
+            <p>
+              {expenseEntry.recipient}: {expenseEntry.expenseAmount}
+            </p>
+          </div>
+        ))}
         <section className="bold">
           ---------------------------------------
         </section>
