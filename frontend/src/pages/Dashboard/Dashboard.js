@@ -1,4 +1,4 @@
-import { useState, useEffect, React } from "react";
+import { useEffect, React } from "react";
 import {
   LineChart,
   Line,
@@ -18,9 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Dashboard.css";
 
 function Dashboard() {
+  //initilize states from slices
   const { monthly_expenses } = useSelector((state) => state.expensesData);
   const { monthly_income } = useSelector((state) => state.incomeData);
-  const { monthly_expensestest } = useSelector((state) => state.incomeData);
   const { total_expenses } = useSelector((state) => state.totalExpensesData);
   const { total_income } = useSelector((state) => state.totalIncomeData);
 
@@ -28,7 +28,7 @@ function Dashboard() {
   const stringId = Id.toString();
 
   const dispatch = useDispatch();
-
+  //renders on every new dispatch, dependent on dispatch
   useEffect(() => {
     dispatch(fetchIncome(stringId));
     dispatch(fetchExpenses(stringId));
@@ -37,13 +37,14 @@ function Dashboard() {
   }, [dispatch, stringId]);
 
   let profit = total_income - total_expenses;
+
   let incArray = [];
   let expArray = [];
   //copies monthly_income to incArray
   incArray = incArray.concat(monthly_income);
   //copies monthly_expenses to expArray
   expArray = expArray.concat(monthly_expenses);
-
+  //array of hexadecimal color codes to use in pie chart
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   //map function to format Date field to remove clock
@@ -66,10 +67,7 @@ function Dashboard() {
   modifiedExpenseArr?.sort(function (a, b) {
     return new Date(a.date) - new Date(b.date);
   });
-  //test to view format in console, will remove later
-  console.log(modifiedExpenseArr);
-
-  //to replace graph represenation, remove modifiedIncomeArr to array of choosing
+  //takes modifiedIncomeArr and renders with recharts
   const renderIncomeGraph = (
     <LineChart width={350} height={300} data={modifiedIncomeArr}>
       <Line
@@ -82,6 +80,7 @@ function Dashboard() {
       <Tooltip />
     </LineChart>
   );
+  //takes modifiedExpenseArr and renders with recharts
   const renderExpenseGraph = (
     <LineChart width={350} height={300} data={modifiedExpenseArr}>
       <Line
@@ -94,6 +93,7 @@ function Dashboard() {
       <Tooltip />
     </LineChart>
   );
+  //takes expArray and renders with recharts
   const renderSpent = (
     <PieChart width={400} height={400}>
       <Pie
@@ -107,6 +107,7 @@ function Dashboard() {
         fill="FF0000" //determines color in pie
       >
         {expArray?.map((entry, index) => (
+          //maps each entry and assins color to fill
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
