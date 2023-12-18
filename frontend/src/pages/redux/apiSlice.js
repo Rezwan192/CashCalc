@@ -91,6 +91,59 @@ export const apiSlice = createApi({
       };
     },
   }),
+   UpdateUsername: builder.mutation({
+      query: ( {Id, newName}) => {
+        console.log(Id);
+        console.log(newName);
+        return {
+          url: `edit/update-profile-name/${Id}`, 
+          method: 'PUT',
+          body: newName, 
+        };
+      },
+    }),
+
+    UpdateEmailAndPassword: builder.mutation({
+      query: ( {Id, data}) => {
+        console.log(Id);
+        console.log(data);
+        return {
+          url: `edit/update-passwordAndEmail/${Id}`, 
+          method: 'PUT',
+          body: data, 
+        };
+      },
+    }),
+
+     UpdateProfileImage: builder.mutation({
+    query: ({ id, file }) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    console.log(formData);
+
+    return {
+      url: `edit/uploadImage/${id}`,
+      method: 'POST',
+      body: formData,
+      headers: {
+        // Note: Do not set Content-Type here, as it will be automatically set by FormData.
+        
+      },
+    };
+  },
+}),
+showUserDetails: builder.mutation({
+  query: ( {Id}) => {
+        console.log(Id);
+        return {
+          url: `cashcalc/getUserData/${Id}`, 
+          method: 'GET',
+        };
+      },
+
+}),
+
   }),
 });
 
@@ -106,4 +159,8 @@ export const {
   useUpdateTotalIncomeMutation,
   useUpdateTotalExpensesMutation,
   useUpdateNeedMutation,
+    useUpdateUsernameMutation,
+  useUpdateEmailAndPasswordMutation,
+  useUpdateProfileImageMutation,
+  useGetShowUserDetailsQuery,
 } = apiSlice;

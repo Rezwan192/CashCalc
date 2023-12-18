@@ -6,6 +6,8 @@ import totalIncomeReducer from "./totalIncomeSlice";
 import totalExpensesReducer from "./totalExpensesSlice";
 import { apiSlice } from "./apiSlice";
 import authReducer from "./authSlice";
+import profileImageReducer from './profileImageSlice';
+import userAccountInfoSlice from "./userAccountInfoSlice";
 
 export default configureStore({
   reducer: {
@@ -16,6 +18,8 @@ export default configureStore({
     totalIncomeData: totalIncomeReducer,
     totalExpensesData: totalExpensesReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
+    profileImage: profileImageReducer,
+    userAccountInfo: userAccountInfoSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

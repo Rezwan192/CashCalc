@@ -17,6 +17,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+   password_length: {
+    type: Number,
+    required: false,
+  },
+   profileImage: {
+    data: Buffer, 
+    contentType: String, 
+  },
   budget: {
     type: Number,
     required: false,

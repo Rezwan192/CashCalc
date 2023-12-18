@@ -144,7 +144,7 @@ router.post("/register", validateFields, async (req, res) => {
   try {
     // Generate a salt with a specified number of rounds (e.g., 10)
     const salt = await bcrypt.genSalt(10);
-
+    const length = password.length;
     // Hash the password using the generated salt
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -155,6 +155,7 @@ router.post("/register", validateFields, async (req, res) => {
       email,
       password: hashedPassword,
       name,
+      password_length: length,
     });
 
     // Save the new user to the database
@@ -342,5 +343,31 @@ router.put("/expenses/need/:expenseid", async (req, res) => {
     res.status(500).json({ message: "Error updating need" });
   }
 });
+
+router.get('/getUserData/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await userData.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Extract the required fields
+    const { name, email, password_length } = user;
+
+    // Send the response
+    res.json({
+      name,
+      email,
+      password_length,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 
 module.exports = router;
