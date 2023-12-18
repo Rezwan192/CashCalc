@@ -6,6 +6,7 @@ export const fetchBudget = createAsyncThunk(
   async (userId, thunkAPI) => {
     console.log(userId);
     try {
+      // Fetch budget using get url defined in userRoutes.js
       const response = await axios.get(
         `http://localhost:3001/cashcalc/budget/${userId}`
       );
@@ -35,6 +36,7 @@ export const budgetSlice = createSlice({
       })
       .addCase(fetchBudget.fulfilled, (state, action) => {
         state.status = "succeeded";
+        // Set budget equal to the payload 
         state.budget = action.payload;
       })
       .addCase(fetchBudget.rejected, (state, action) => {

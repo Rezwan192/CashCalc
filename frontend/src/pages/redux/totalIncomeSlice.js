@@ -6,6 +6,7 @@ export const fetchTotalIncome = createAsyncThunk(
   async (userId, thunkAPI) => {
     console.log(userId);
     try {
+      // Fetch total income using get url defined in userRoutes
       const response = await axios.get(
         `http://localhost:3001/cashcalc/total_income/${userId}`
       );

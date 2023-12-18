@@ -6,6 +6,7 @@ export const apiSlice = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: `http://localhost:3001/cashcalc/` }),
   endpoints: (builder) => ({
+    // GET queries for budget, monthly income, monthly expenses, total income, and total expenses
     getMonthlyIncome: builder.query({
       query: (Id) => ({
         url: `income/${Id}`,
@@ -36,6 +37,7 @@ export const apiSlice = createApi({
         method: "GET",
       }),
     }),
+    // PUT queries for budget, monthly income, monthly expenses, total income, and total expenses
     updateMonthlyIncome: builder.mutation({
       query: ({ Id, incomeData }) => {
         return {

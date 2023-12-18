@@ -6,6 +6,7 @@ export const fetchExpenses = createAsyncThunk(
   async (userId, thunkAPI) => {
     console.log(userId);
     try {
+      // Fetch monthly_expenses using get url defined in userRoutes
       const response = await axios.get(
         `http://localhost:3001/cashcalc/expenses/${userId}`
       );
