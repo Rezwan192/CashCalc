@@ -19,26 +19,26 @@ Deployment Link: https://cashcalc-deployment.onrender.com/
 ### Completed Features
 
 1. Get Started Page
-a.                      Users can input budget, monthly income, and monthly expenses information. 
-b. Monthly income includes: Source, Category, Date, and incomeAmount
-c. Monthly expenses includes: Recipient, Category, Date, and expenseAmount
-d. Arrays for monthly income and monthly expenses are dynamically displayed and updated in the database as entries are submitted by the user
-e. Total income and total expenses are calculated and updated in the database as entries are submitted by the user
+   * Users can input budget, monthly income, and monthly expenses information. 
+   * Monthly income includes: Source, Category, Date, and incomeAmount
+   * Monthly expenses includes: Recipient, Category, Date, and expenseAmount
+   * Arrays for monthly income and monthly expenses are dynamically displayed and updated in the database as entries are submitted by the user
+   * Total income and total expenses are calculated and updated in the database as entries are submitted by the user
 
-2. Budget Planning Page
-a. consists of 2 components BudgetPlanning.js and BPcard.js
-b. for a new user the budget planning page will be a table with 3 empty columns initially. The user has to add expenses through the Get Started page first
-c. for a new user who has added expenses to their account, that user would have to press the add item button, select an expense, assign a need, and then confirm their choices.
-d. after assigning needs to their expenses, expenses will show on the budget planning page in their respective need columns (necessary, medium, and unnecessary)
+3. Budget Planning Page
+   * Consists of 2 components BudgetPlanning.js and BPcard.js
+   * For a new user the budget planning page will be a table with 3 empty columns initially. The user has to add expenses through the Get Started page first
+   * For a new user who has added expenses to their account, that user would have to press the add item button, select an expense, assign a need, and then confirm their choices.
+   * After assigning needs to their expenses, expenses will show on the budget planning page in their respective need columns (necessary, medium, and unnecessary)
 
 4. Dashboard
-a. Displays a summary of important user data in different forms consisting of one component
-b. 3 separate graphs, along with a display of total income, total expenses, profit margin and a list of expenses inputted by the user
-c. Dashboard recieves fetch calls from database and dynamically generates graphical represenation on every subsequent entry
-d. users are then free to use the data displayed as they need in order to see the improvements to be made
+   * Displays a summary of important user data in different forms consisting of one component
+   * 3 separate graphs, along with a display of total income, total expenses, profit margin and a list of expenses inputted by the user
+   * Dashboard recieves fetch calls from database and dynamically generates graphical represenation on every subsequent entry
+   * Users are then free to use the data displayed as they need in order to see the improvements to be made
 
 6. Profile Page 
-a. allows user to view and update your profile
+   * Allows user to view and update their profile picture, username, email, and password 
 
 
 ### Uncompleted Features
