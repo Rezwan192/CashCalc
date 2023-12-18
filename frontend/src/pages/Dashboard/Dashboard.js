@@ -16,7 +16,7 @@ import { fetchTotalIncome } from "../redux/totalIncomeSlice";
 import { selectId } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "./Dashboard.css";
-//
+///
 function Dashboard() {
   //initilize states from slices
   const { monthly_expenses } = useSelector((state) => state.expensesData);
