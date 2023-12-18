@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const updateRouter = require("./updateRouter/updateProfile.js");
 const forgot_password = require("./forgotPassword/forgetPasswordRouter.js");
 const editProfile = require("../backend/mongoDB/editProfile.js");
-
+const path = require("path");
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -27,11 +27,11 @@ app.listen(port, () => {
 });
 
 if(process.env.NODE_ENV === "production"){
-  const __dirname = path.resolve();
-  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  const dirname = path.resolve();
+  app.use(express.static(path.join(dirname, "/frontend/build")));
 
   app.get("*", (req, res)=>
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html" ))
+    res.sendFile(path.resolve(dirname, "frontend", "build", "index.html" ))
   );
 }else{
   app.get("/", (req, res) =>{
