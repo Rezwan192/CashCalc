@@ -46,7 +46,7 @@ Remember me
 * Ran out of time due to prioritizing functionality of more important parts of the site
 
 Reset email
-* Able to send the reset link Containing id to gmail but unable to create a form without logging in and change the password
+* Able to send the reset link containing id to gmail but unable to create a form without logging in and changing the password
 
 Budget Planning
 * Due to having too much trouble trying to correctly implement the add item button in BPCard, i moved the logic over to BudgetPlanning, and made 1 uniform button rather than 3 made for each column(see figma for the design differences)
