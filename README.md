@@ -4,7 +4,7 @@
 Group Members; Josh, Sabeet, Shankar, Rezwan 
 
 ### Summary
-CashCalc provides users with a personal finance tracker. It consists of a get started page that allows users to enter their budget, income, and expenses information. This is then connected to a dashboard page that summarizes the inputted user data, including visualizations using graphs. In addition, there is a budget planning page where users can assign levels of need to their expenses, upon which the expenses will be displayed on a table based on the level of need chosen. The last page is a profile page where the user can view and update their personal information.
+CashCalc provides users with a personal finance tracker. It consists of a Get Started page that allows users to enter their budget, income, and expenses information. This is then connected to a Dashboard page that summarizes the inputted user data, including visualizations using graphs. In addition, there is a Budget Planning page where users can assign levels of need to their expenses, upon which the expenses will be displayed on a table based on the level of need chosen. The last page is a Profile page where the user can view and update their personal information.
 
 ### Who worked on what
 1. Rezwan - Get Started + RTK Query/Redux + Frontend for Home/SignIn/SignUp 
