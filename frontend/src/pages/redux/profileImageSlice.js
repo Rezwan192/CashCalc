@@ -5,7 +5,6 @@ import axios from 'axios';
 export const fetchProfileImage = createAsyncThunk(
   'profileImage/fetchProfileImage',
   async (userId, thunkAPI) => {
-    console.log(userId);
     try {
       const response = await axios.get(`http://localhost:3001/cashcalc/edit/getProfileImage/${userId}`, {
         responseType: 'blob', // Set the response type to 'blob' to handle binary data
