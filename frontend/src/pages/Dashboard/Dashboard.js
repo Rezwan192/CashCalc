@@ -14,6 +14,7 @@ import {
   useGetMonthlyIncomeQuery,
   useGetMonthlyExpensesQuery,
 } from "../redux/apiSlice";
+import { fetchExpenses } from "../redux/expensesSlice";
 import { fetchTotalExpenses } from "../redux/totalExpensesSlice";
 import { fetchTotalIncome } from "../redux/totalIncomeSlice";
 import { selectId } from "../redux/authSlice";
@@ -33,6 +34,7 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchExpenses(stringId));
     dispatch(fetchTotalIncome(stringId));
     dispatch(fetchTotalExpenses(stringId));
   }, [dispatch, stringId]);
