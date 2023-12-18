@@ -44,4 +44,15 @@ a{
     font-weight: bolder;
 }
 
-
+.LogOut{
+    background-color: #BAAFAF;
+    border-radius: 5px;
+    padding: 15%;
+    margin-left: -40%;
+    margin-top: 10%;
+    visibility: hidden;
+}
+.logout{
+    position: relative;
+    right: 5%;
+}

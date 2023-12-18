@@ -4,8 +4,30 @@ import profile from "../../assets/images/Profile_Page_icon/Male User.png";
 import image1 from "../../assets/images/Profile_Page_icon/photo.png";
 import edit from "../../assets/images/Profile_Page_icon/Edit.png";
 
+import { useUpdateUsernameMutation } from "../redux/apiSlice";
+import { useSelector } from "react-redux";
+import { selectId } from "../redux/authSlice";
+import { useDispatch } from 'react-redux';
+
+
 const Profile = () => {
   const [condition, setCondition] = useState("none");
+  const [newUsername, setNewUsername] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  //const [updateUsername] = useUpdateUsernameMutation();
+  const Id = useSelector((state) => selectId(state)); // Use useSelector to get the current state  
+  const dispatch = useDispatch();
+
+
+//  const handleUpdateUsername = async () => {
+//     try {
+//       console.log('My Id rn', Id.toString());
+//       await dispatch(useUpdateUsernameMutation(Id.toString(), newUsername));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
 
   const hideForm = () => {
     document.querySelector('.FormPart').style.visibility = 'hidden';
@@ -98,9 +120,14 @@ const Profile = () => {
           <div className="update-Username">
             <div className="contents">
               <span>New Username</span>
-              <input className="space username"></input>
+              <input 
+              className="space username"
+              value= {newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              placeholder="New Username"
+              ></input>
               <div className="upload_section">
-                <div className="Upload">Save</div>
+              <div className="Upload" onClick={handleUpdateUsername}>Save</div>
                 <div className="Cancel" onClick={hideForm}>
                   Cancel
                 </div>
