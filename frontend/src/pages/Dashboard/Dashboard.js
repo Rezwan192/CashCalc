@@ -10,7 +10,6 @@ import {
   Cell,
   Legend,
 } from "recharts";
-import renderSavings from "./savingsGraph";
 import {
   useGetMonthlyIncomeQuery,
   useGetMonthlyExpensesQuery,
@@ -49,6 +48,7 @@ function Dashboard() {
     isLoading: isExpensesLoading,
   } = useGetMonthlyExpensesQuery(stringId);
 
+  let profit = total_income - total_expenses;
   //copies monthly_income to incArray
   let incArray = fetchedIncomeData;
   //copies monthly_expenses to expArray
@@ -114,7 +114,7 @@ function Dashboard() {
         cy={200} //positioning on y-axis
         innerRadius={60} //affects inner circle in pie
         outerRadius={90} //affects pie itself
-        paddingAngle={5} //distance between segmented bars
+        paddingAngle={0} //distance between segmented bars
         fill="FF0000" //determines color in pie
       >
         {expArray?.map((entry, index) => (
@@ -139,11 +139,6 @@ function Dashboard() {
         <renderExpenseGraph>{renderExpenseGraph}</renderExpenseGraph>
       </div>
 
-      <div className="savings">
-        Your Savings in 2023
-        <renderSavings>{renderSavings}</renderSavings>
-      </div>
-
       <div className="totalIncome">
         <section className="colorGreen">
           Income
@@ -157,6 +152,13 @@ function Dashboard() {
           <br />{" "}
         </section>
         $ {total_expenses}
+      </div>
+      <div className="profit">
+        <section className="colorGrey">
+          Profit
+          <br />{" "}
+        </section>
+        $ {profit}
       </div>
       <div className="spent">
         Spent <br />
