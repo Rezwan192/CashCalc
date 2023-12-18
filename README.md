@@ -73,7 +73,7 @@ Get Started
 - Any IDE can be used preferred VisualCode Studio
 
 #### Installation
-- Clone the code [click me to copy the link to clone] (https://github.com/Rezwan192/CashCalc.git)
+- Clone the code [click me to copy the link to clone](https://github.com/Rezwan192/CashCalc.git)
 - In terminal 
 ```
 cd <path-to-where-you-want-to-clone> 
@@ -108,7 +108,7 @@ React
 Recharts
 
 ### Contribution
-We welcome all students and software developer to contribute in our project by adding features that elevates our project functionality  all you have to do is pull request and here is the link to fork it [click me to fork] (https://github.com/Rezwan192/CashCalc/fork)
+We welcome all students and software developer to contribute in our project by adding features that elevates our project functionality  all you have to do is pull request and here is the link to fork it [click me to fork](https://github.com/Rezwan192/CashCalc/fork)
 
 
 ### References
