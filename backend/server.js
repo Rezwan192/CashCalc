@@ -24,4 +24,16 @@ app.use("/cashcalc/forgot/", forgot_password);
 app.use("/cashcalc/edit", editProfile);
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
+
+  if(process.env.NODE_ENV === "production"){
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  app.get("*", (req, res)=>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html" ))
+  );
+}else{
+  app.get("/", (req, res) =>{
+    res.send("API is running....");
+  });
 });
