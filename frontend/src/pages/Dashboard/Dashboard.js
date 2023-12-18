@@ -3,18 +3,14 @@ import {
   LineChart,
   Line,
   XAxis,
-  YAxis,
   Tooltip,
   PieChart,
   Pie,
   Cell,
   Legend,
 } from "recharts";
-import {
-  useGetMonthlyIncomeQuery,
-  useGetMonthlyExpensesQuery,
-} from "../redux/apiSlice";
 import { fetchExpenses } from "../redux/expensesSlice";
+import { fetchIncome } from "../redux/incomeSlice";
 import { fetchTotalExpenses } from "../redux/totalExpensesSlice";
 import { fetchTotalIncome } from "../redux/totalIncomeSlice";
 import { selectId } from "../redux/authSlice";
@@ -22,9 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Dashboard.css";
 
 function Dashboard() {
-  //TODO: figure out display of savings and expenses right tab
-  const [Spent, setSpent] = useState("100");
   const { monthly_expenses } = useSelector((state) => state.expensesData);
+  const { monthly_income } = useSelector((state) => state.incomeData);
+  const { monthly_expensestest } = useSelector((state) => state.incomeData);
   const { total_expenses } = useSelector((state) => state.totalExpensesData);
   const { total_income } = useSelector((state) => state.totalIncomeData);
 
@@ -34,27 +30,19 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(fetchIncome(stringId));
     dispatch(fetchExpenses(stringId));
     dispatch(fetchTotalIncome(stringId));
     dispatch(fetchTotalExpenses(stringId));
   }, [dispatch, stringId]);
 
-  const {
-    data: fetchedIncomeData,
-    error: incomeError,
-    isLoading: isIncomeLoading,
-  } = useGetMonthlyIncomeQuery(stringId);
-  const {
-    data: fetchedExpensesData,
-    error: expensesError,
-    isLoading: isExpensesLoading,
-  } = useGetMonthlyExpensesQuery(stringId);
-
   let profit = total_income - total_expenses;
+  let incArray = [];
+  let expArray = [];
   //copies monthly_income to incArray
-  let incArray = fetchedIncomeData;
+  incArray = incArray.concat(monthly_income);
   //copies monthly_expenses to expArray
-  let expArray = fetchedExpensesData;
+  expArray = expArray.concat(monthly_expenses);
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -79,7 +67,7 @@ function Dashboard() {
     return new Date(a.date) - new Date(b.date);
   });
   //test to view format in console, will remove later
-  console.log(modifiedIncomeArr);
+  console.log(modifiedExpenseArr);
 
   //to replace graph represenation, remove modifiedIncomeArr to array of choosing
   const renderIncomeGraph = (
@@ -106,7 +94,6 @@ function Dashboard() {
       <Tooltip />
     </LineChart>
   );
-
   const renderSpent = (
     <PieChart width={400} height={400}>
       <Pie
@@ -164,7 +151,6 @@ function Dashboard() {
       </div>
       <div className="spent">
         Spent <br />
-        {Spent}
         <renderSpent>{renderSpent}</renderSpent>
       </div>
 
