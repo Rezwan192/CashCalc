@@ -318,4 +318,29 @@ router.put("/total_expenses/:id", async (req, res) => {
   }
 });
 
+//localhost:3001/cashcalc/expenses/need/:expenseid
+router.put("/expenses/need/:expenseid", async (req, res) => {
+  console.log("request params:", req.params);
+  console.log("Request Body:", req.body);
+  const expenseId = req.params.expenseid;
+  req.body._id = expenseId;
+  try {
+    const result = await userData.findOneAndUpdate(
+      {'monthly_expenses._id': expenseId},
+      {$set:{'monthly_expenses.$': req.body}},
+      {new: true}
+    );
+    console.log(result);
+    if(result){
+      res.json(result);
+    } else {
+      res.status(404).json({error: 'Something went wrong'});
+    }
+  }
+  catch(error){
+    console.log(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating need" });
+  }
+});
+
 module.exports = router;

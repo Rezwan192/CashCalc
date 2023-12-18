@@ -264,7 +264,7 @@ export default function User_Data_Input() {
           <input
             className="get-started-input"
             type="number"
-            value={incomeData.amount}
+            value={incomeData.incomeAmount}
             onChange={(e) => handleIncomeInputChange(e, "incomeAmount")}
             placeholder="Enter amount"
           />
@@ -328,7 +328,7 @@ export default function User_Data_Input() {
           <input
             className="get-started-input"
             type="number"
-            value={expensesData.amount}
+            value={expensesData.expenseAmount}
             onChange={(e) => handleExpenseInputChange(e, "expenseAmount")}
             placeholder="Enter amount"
           />

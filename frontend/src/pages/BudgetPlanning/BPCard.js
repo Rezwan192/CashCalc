@@ -1,64 +1,92 @@
 import "./BPCard.css"
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect} from "react";
+import { selectId } from "../redux/authSlice";
+import { fetchExpenses } from "../redux/expensesSlice";
 function BPCard({ title }) {
-  const necessaryData = [
-    { id: 1, Name: "Landlord", Category: "Rent", Price: "2500.75" },
-    { id: 2, Name: "College Fee", Category: "Education", Price: "4500.75" },
-    { id: 3, Name: "Grocery", Category: "Fooding", Price: "500.75" },
-  ];
-  
-  const mediumData = [
-    { id: 4, Name: "Landlord", Category: "Rent", Price: "2500.75" },
-    { id: 5, Name: "Netflix", Category: "Subscription", Price: "20.75" },
-    { id: 6, Name: "Netflix", Category: "Subscription", Price: "20.75" },
-  ];
-  
-  const unnecessaryData = [
-    { id: 7, Name: "Chegg", Category: "Subscription", Price: "10.75" },
-    { id: 8, Name: "Amazon", Category: "Shopping", Price: "1000.75" },
-  ];
-  
   const isTitleOne = title === "Necessary Budget";
   const isTitleTwo = title === "Medium Need";
   const isTitleThree = title === "Unnecessary Budget";
+  // const isEmpty =monthly_expenses.length
+  const necArray =[];
+  const medArray =[];
+  const unArray =[];
+  const { monthly_expenses } = useSelector((state) => state.expensesData);
+  const Id = useSelector((state) => selectId(state));
+  const stringId = Id.toString();
+  const dispatch = useDispatch();
+  useEffect(() =>{
+    dispatch(fetchExpenses(stringId))
+    // getNecessary()
+    // getMedium()
+    // getUnnecessary()
+  }, [dispatch, stringId]);
   
-  const HandleClick = () => {
-    console.log("goodbye world!")
-  }
-  
+  function getNecessary(){
+    for(let i =0; i< monthly_expenses.length; i++)
+    {
+      if(monthly_expenses[i].need == "necessary")
+        necArray.push(monthly_expenses[i]);
+    }   
+    
+    }
+    function getMedium(){
+      for(let i =0; i< monthly_expenses.length; i++)
+      {
+        if(monthly_expenses[i].need == "medium")
+          medArray.push(monthly_expenses[i]);
+      }   
+      
+      }
+      function getUnnecessary(){
+        for(let i =0; i< monthly_expenses.length; i++)
+        {
+          if(monthly_expenses[i].need == "unnecessary")
+            unArray.push(monthly_expenses[i]);
+        }  
+        }
   return(
     <>
     <div className="bigContainer">
   <div className="BPcard">
     <h2>{title}</h2>
+    {
+      getNecessary()
+    }
+    {
+      getMedium()
+    }
+    {
+      getUnnecessary()
+    }
     { isTitleOne && <> 
-    {necessaryData.map(function (nec) {
+    {necArray.map(function (nec) {
       return (
-      <div className="innerBP" key={nec.id}>
-        <p id="leftaligned">{nec.Name}</p>
-        <p id="leftaligned">Category: {nec.Category}</p>
-        <p id="rightaligned">${nec.Price}</p>
+      <div className="innerBP" key={nec._id}>
+        <p id="leftaligned">{nec.recipient}</p>
+        <p id="leftaligned">Category: {nec.category}</p>
+        <p id="rightaligned">${nec.expenseAmount}</p>
       </div>);})}</>
     }
     { isTitleTwo && <> 
-    {mediumData.map(function (nec) {
+    {medArray.map(function (med) {
       return (
-      <div className="innerBP" key={nec.id}>
-        <p id="leftaligned">{nec.Name}</p>
-        <p id="leftaligned">Category: {nec.Category}</p>
-        <p id="rightaligned">${nec.Price}</p>
+      <div className="innerBP" key={med._id}>
+        <p id="leftaligned">{med.recipient}</p>
+        <p id="leftaligned">Category: {med.category}</p>
+        <p id="rightaligned">${med.expenseAmount}</p>
       </div>);})}</>
     }
     { isTitleThree && <> 
-    {unnecessaryData.map(function (nec) {
+    {unArray.map(function (un) {
       return (
-      <div className="innerBP" key={nec.id}>
-        <p id="leftaligned">{nec.Name}</p>
-        <p id="leftaligned">Category: {nec.Category}</p>
-        <p id="rightaligned">${nec.Price}</p>
+      <div className="innerBP" key={un._id}>
+        <p id="leftaligned">{un.recipient}</p>
+        <p id="leftaligned">Category: {un.category}</p>
+        <p id="rightaligned">${un.expenseAmount}</p>
       </div>);})}</>
     }
   </div>
-  <div id="buttondiv"><button id="bpbutton" onClick={HandleClick}>+</button>&nbsp; Add Item</div>
   </div>
   
   </>);}

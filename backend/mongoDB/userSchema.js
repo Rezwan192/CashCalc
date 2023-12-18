@@ -83,6 +83,10 @@ const userSchema = mongoose.Schema({
         type: Number,
         required: false,
       },
+      need:{
+        type: String,
+        required: false,  
+      },
     },
   ],
 });
