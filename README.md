@@ -118,10 +118,17 @@ We welcome all students and software developer to contribute in our project by a
 ### References
 
 Multer package for uploading image: https://www.npmjs.com/package/multer
+
 Rechart package for displaying line chart: link https://recharts.org/en-US/
+
 Nodemailer to send reset password link using w3schools: https://www.w3schools.com/nodejs/nodejs_email.asp
+
 Redux Tutorial: https://youtu.be/iBUJVy8phqw?si=-yzt-HCIzE0sxaWf
+
 RTK Query for fetching data from the backend: https://redux-toolkit.js.org/rtk-query/overview 
+
 Mern Auth Tutorial: https://www.youtube.com/watch?v=R4AhvYORZRY
+
 MongoDB Documentation: https://www.mongodb.com/docs/
+
 Updating nested data tutorial(used for updating need functionality): https://www.youtube.com/watch?v=aA_y3ewrnpI 
