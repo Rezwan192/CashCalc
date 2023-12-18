@@ -12,7 +12,7 @@ export const fetchProfileImage = createAsyncThunk(
       });
        if(!response.data)
        {
-        return null;
+        return [];
        }
        else{
       const blob = response.data;

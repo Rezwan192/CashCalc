@@ -62,11 +62,13 @@ router.get("/:id", verifyToken, async (req, res) => {
 // localhost:5000/cashcalc/income/:id
 router.get("/income/:id", async (req, res) => {
   try {
-    const e = await userData.findById(req.params.id, "monthly_income");
-    if (!userData) {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e);
+    const fetchedIncome = user.monthly_income;
+    console.log("Monthly Income:", fetchedIncome);
+    res.json(fetchedIncome);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -74,13 +76,63 @@ router.get("/income/:id", async (req, res) => {
 });
 
 // localhost:5000/cashcalc/expenses/:id
-router.get("/expenses/:id", verifyToken, async (req, res) => {
+router.get("/expenses/:id", async (req, res) => {
   try {
-    const e = await userData.findById(req.params.id, "monthly_expenses");
-    if (!userData) {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: "data not found" });
     }
-    res.json(e);
+    const fetchedExpenses = user.monthly_expenses;
+    console.log("Monthly Expenses:", fetchedExpenses);
+    res.json(fetchedExpenses);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error retrieving data" });
+  }
+});
+
+// localhost:5000/cashcalc/budget/:id
+router.get("/budget/:id", async (req, res) => {
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    const fetchedBudget = user.budget;
+    console.log("Budget", fetchedBudget);
+    res.json(fetchedBudget);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error retrieving data" });
+  }
+});
+
+// localhost:3001/cashcalc/total_income/:id
+router.get("/total_income/:id", async (req, res) => {
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    const fetchedTotalIncome = user.total_income;
+    console.log("Total Income", fetchedTotalIncome);
+    res.json(fetchedTotalIncome);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error retrieving data" });
+  }
+});
+
+// localhost:3001/cashcalc/total_expenses/:id
+router.get("/total_expenses/:id", async (req, res) => {
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    const fetchedTotalExpenses = user.total_expenses;
+    console.log("Total Expenses", fetchedTotalExpenses);
+    res.json(fetchedTotalExpenses);
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error retrieving data" });
@@ -125,7 +177,7 @@ router.post("/register", validateFields, async (req, res) => {
 // Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
+console.log(email + " " + password);
   // Check if the user exists
 const user = await userData.findOne({ email }); // Add .exec() at the end
   console.log("User:", user); // Debug: Log user
@@ -166,9 +218,9 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully" });
 });
 
-//localhost:5000/cashcalc/:id/income
-router.put("/:id/income", async (req, res) => {
-  console.log("Request Body:", req.body); 
+//localhost:3001/cashcalc/income/:id
+router.put("/income/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
   const { source, category, date, amount } = req.body;
   try {
     const user = await userData.findById(req.params.id);
@@ -184,6 +236,69 @@ router.put("/:id/income", async (req, res) => {
   } catch (error) {
     console.error(`Error: ${error.message}`);
     res.status(500).json({ message: "Error updating monthly income" });
+  }
+});
+
+router.put("/expenses/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const { recipient, category, date, amount } = req.body;
+
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Add monthly expense entry
+    user.monthly_expenses.push({ recipient, category, date, amount });
+    await user.save();
+
+    const Year = date.getFullYear().toString();
+    const Month = date.getMonth() + 1; // Adjust to get the actual month number
+    console.log(Year, " "+ Month);
+    // Check if the total_Income_In_Month entry for the current month and year exists
+    const existingMonthEntry = user.total_Income_In_Month.find(
+      (entry) => entry.Year === Year && entry.Month === Month.toString()
+    );
+
+    if (existingMonthEntry) {
+      // Update the existing entry
+      existingMonthEntry.total += amount;
+    } else {
+      // Add a new entry for the current month and year
+      user.total_Income_In_Month.push({ Year: Year.toString(), Month: Month.toString(), total: amount });
+    }
+
+    await user.save();
+
+    res.json(user.monthly_expenses);
+    res.json(Year);
+    res.json(Month);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating monthly expenses" });
+  }
+});
+
+
+//localhost:3001/cashcalc/budget/:id
+router.put("/budget/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const { budget } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update budget
+    user.budget = budget;
+    await user.save();
+
+    res.json(user.budget);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating budget" });
   }
 });
 
@@ -211,6 +326,46 @@ router.get('/getUserData/:id', async (req, res) => {
   }
 });
 
+//localhost:3001/cashcalc/total_income/:id
+router.put("/total_income/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const { total_income } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    // Update total income
+    user.total_income = total_income;
+    await user.save();
+
+    res.json(user.total_income);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating total income" });
+  }
+});
+
+//localhost:3001/cashcalc/total_expenses/:id
+router.put("/total_expenses/:id", async (req, res) => {
+  console.log("Request Body:", req.body);
+  const { total_expenses } = req.body;
+  try {
+    const user = await userData.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update budget
+    user.total_expenses = total_expenses;
+    await user.save();
+
+    res.json(user.total_expenses);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ message: "Error updating total expenses" });
+  }
+});
 
 module.exports = router;

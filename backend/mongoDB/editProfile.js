@@ -107,10 +107,14 @@ router.get('/getProfileImage/:id', async (req, res) => {
     const user = await userData.findById(userId);
 
     if (!user || !user.profileImage) {
-      return res.status(404).json({ message: 'User or image not found' });
+      return res.send(null);
     }
 
     const imageData = user.profileImage.data;
+    if(!imageData)
+    {
+      return res.send(null);
+    }
     const contentType = user.profileImage.contentType;
 
     res.set('Content-Type', contentType);

@@ -8,13 +8,75 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `http://localhost:3001/cashcalc/` }),
   endpoints: (builder) => ({
     // ... other endpoints
+    getMonthlyIncome: builder.query({
+      query: (Id) => ({
+        url: `income/${Id}`,
+        method: "GET",
+      }),
+    }),
+    getMonthlyExpenses: builder.query({
+      query: (Id) => ({
+        url: `expenses/${Id}`,
+        method: "GET",
+      }),
+    }),
+    getBudget: builder.query({
+      query: (Id) => ({
+        url: `budget/${Id}`,
+        method: "GET",
+      }),
+    }),
+
+    getTotalIncome: builder.query({
+      query: (Id) => ({
+        url: `total_income/${Id}`,
+        method: "GET",
+      }),
+    }),
+
+    getTotalExpenses: builder.query({
+      query: (Id) => ({
+        url: `total_expenses/${Id}`,
+        method: "GET",
+      }),
+    }),
 
     updateMonthlyIncome: builder.mutation({
       query: ( {Id, incomeData}) => {
         return {
-          url: `${Id}/income`, 
+          url: `income/${Id}`, 
           method: 'PUT',
           body: incomeData, 
+        };
+      },
+    }),
+
+    updateMonthlyExpenses: builder.mutation({
+      query: ({ Id, expensesData }) => {
+        return {
+          url: `expenses/${Id}`,
+          method: "PUT",
+          body: expensesData,
+        };
+      },
+    }),
+
+    updateBudget: builder.mutation({
+      query: ({ Id, budgetData }) => {
+        return {
+          url: `budget/${Id}`,
+          method: "PUT",
+          body: budgetData,
+        };
+      },
+    }),
+
+    updateTotalIncome: builder.mutation({
+      query: ({ Id, totalIncomeData }) => {
+        return {
+          url: `total_income/${Id}`,
+          method: "PUT",
+          body: totalIncomeData,
         };
       },
     }),
@@ -27,6 +89,16 @@ export const apiSlice = createApi({
           url: `edit/update-profile-name/${Id}`, 
           method: 'PUT',
           body: newName, 
+        };
+      },
+    }),
+
+    updateTotalExpenses: builder.mutation({
+      query: ({ Id, totalExpensesData }) => {
+        return {
+          url: `total_expenses/${Id}`,
+          method: "PUT",
+          body: totalExpensesData,
         };
       },
     }),
@@ -62,6 +134,16 @@ export const apiSlice = createApi({
   },
 }),
 
+updateNeed: builder.mutation({
+      query: ({ Id, ExpenseID, needData }) => {
+        return {
+          url: `expenses/need/${Id}/${ExpenseID}`,
+          method: "PUT",
+          body: needData,
+        };
+      },
+    }),
+
 showUserDetails: builder.mutation({
   query: ( {Id}) => {
         console.log(Id);
@@ -82,6 +164,15 @@ export const {
   useUpdateUsernameMutation,
   useUpdateEmailAndPasswordMutation,
   useUpdateProfileImageMutation,
-  useGetShowUserDetailsQuery, // Include the showUserDetails endpoint
-} = apiSlice;
+  useGetShowUserDetailsQuery,
+  useGetMonthlyExpensesQuery,
+  useGetBudgetQuery,
+  useUpdateNeedMutation,
+  useUpdateMonthlyExpensesMutation,
+  useUpdateBudgetMutation,
+  useGetTotalIncomeQuery,
+  useGetTotalExpensesQuery,
+  useUpdateTotalIncomeMutation,
+  useUpdateTotalExpensesMutation,
 
+} = apiSlice;

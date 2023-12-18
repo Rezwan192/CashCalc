@@ -106,6 +106,7 @@ router.post('/reset-password/:id/:token', async (req, res) => {
     res.status(500).json({ message: 'Error resetting password' });
   }
 });
+
 router.get('/reset-password/:id/:token', async (req, res) => {
   const { id, token } = req.params;
 

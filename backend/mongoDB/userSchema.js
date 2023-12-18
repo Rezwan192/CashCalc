@@ -22,8 +22,8 @@ const userSchema = mongoose.Schema({
     required: false,
   },
   profileImage: {
-    data: Buffer, // Binary data for the image
-    contentType: String, // MIME type of the image (e.g., 'image/jpeg', 'image/png')
+    data: Buffer, 
+    contentType: String, 
   },
   budget: {
     type: Number,
@@ -67,15 +67,41 @@ const userSchema = mongoose.Schema({
         type: String,
         required: false,
       },
-      type: {
+      recipient: {
         type: String,
         required: false,
       },
-      total: {
+      category: {
+        type: String, 
+        required: false,
+      },
+      date: {
+        type: Date,
+        required: false,
+      },
+      amount: {
         type: Number,
         required: false,
       },
     },
+  ],
+  total_Income_In_Month: [
+    {
+      Year: {
+        type: String,
+        required: false,
+      },
+      Month:
+      {
+        type: String,
+        required: false,
+      },
+      total:
+      {
+        type: Number,
+        required: false,
+      }
+    }
   ],
 });
 
